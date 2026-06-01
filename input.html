@@ -1,0 +1,4445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0"/>
+
+<title>Input Laporan</title>
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+/* =========================
+RESET
+========================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:#f5f7f9;
+  color:#1c1c1c;
+}
+
+/* =========================
+LAYOUT
+========================= */
+
+.dashboard-layout{
+  display:flex;
+  min-height:100vh;
+}
+
+/* =========================
+SIDEBAR
+========================= */
+
+.sidebar{
+
+  width:260px;
+
+  background:
+  linear-gradient(
+    180deg,
+    #052e1b,
+    #06351f,
+    #041f14
+  );
+
+  padding:24px 16px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
+
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  height:100vh;
+
+  overflow:hidden;
+}
+
+.sidebar::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+  radial-gradient(
+    circle at top right,
+    rgba(32,201,111,0.16),
+    transparent 45%
+  );
+
+  pointer-events:none;
+}
+
+/* LOGO */
+
+.logo{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  color:white;
+
+  margin-bottom:40px;
+
+  position:relative;
+
+  z-index:2;
+}
+
+.logo span{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.logo-icon{
+
+  width:44px;
+  height:44px;
+
+  border-radius:14px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:
+  rgba(255,255,255,0.08);
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+}
+
+.logo-icon i{
+
+  font-size:22px;
+
+  color:#8dff9d;
+}
+
+/* MENU */
+
+.sidebar-menu{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+
+  position:relative;
+
+  z-index:2;
+}
+
+.sidebar-title{
+
+  color:rgba(255,255,255,0.45);
+
+  font-size:12px;
+
+  font-weight:600;
+
+  margin:
+  22px 14px 8px;
+}
+
+.sidebar-item{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  padding:16px 18px;
+
+  border-radius:18px;
+
+  color:rgba(255,255,255,0.82);
+
+  text-decoration:none;
+
+  font-size:15px;
+
+  font-weight:500;
+
+  transition:0.25s;
+}
+
+.sidebar-item i{
+
+  width:20px;
+
+  text-align:center;
+}
+
+.sidebar-item:hover{
+
+  background:
+  rgba(255,255,255,0.08);
+
+  color:white;
+}
+
+.sidebar-item.active{
+
+  background:
+  linear-gradient(
+    135deg,
+    #0a6b2d,
+    #11853c
+  );
+
+  color:white;
+
+  box-shadow:
+  0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* PROFILE */
+
+.sidebar-profile{
+
+  position:relative;
+
+  z-index:2;
+
+  background:
+  rgba(255,255,255,0.06);
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+
+  border-radius:22px;
+
+  padding:16px;
+
+  color:white;
+}
+
+.profile-top{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+}
+
+.profile-avatar{
+
+  width:46px;
+  height:46px;
+
+  border-radius:50%;
+
+  background:#1ec45d;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-weight:700;
+}
+
+/* =========================
+MAIN CONTENT
+========================= */
+
+.main-content{
+
+  flex:1;
+
+  margin-left:260px;
+
+  padding:24px;
+}
+
+/* =========================
+TOPBAR
+========================= */
+
+.topbar{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  margin-bottom:22px;
+}
+
+.topbar h1{
+
+  font-size:42px;
+
+  font-weight:800;
+
+  margin-bottom:8px;
+}
+
+.topbar p{
+
+  color:#6b7280;
+
+  font-size:15px;
+}
+
+.topbar-right{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:16px;
+}
+
+.date-box{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:16px;
+
+  padding:14px 18px;
+
+  font-weight:600;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+}
+
+.user-box{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:16px;
+
+  padding:10px 14px;
+}
+
+/* =========================
+GRID
+========================= */
+
+.content-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  1.6fr .7fr;
+
+  gap:18px;
+}
+
+/* =========================
+CARD
+========================= */
+
+.card{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:24px;
+
+  padding:22px;
+}
+
+.section-header{
+
+  display:flex;
+
+  align-items:flex-start;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.section-left{
+
+  display:flex;
+
+  gap:14px;
+}
+
+.number-badge{
+
+  width:34px;
+  height:34px;
+
+  border-radius:50%;
+
+  background:#063f24;
+
+  color:white;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-weight:700;
+
+  font-size:14px;
+}
+
+.section-title{
+
+  font-size:32px;
+
+  font-weight:700;
+
+  margin-bottom:6px;
+}
+
+.section-desc{
+
+  font-size:14px;
+
+  color:#667085;
+}
+
+/* =========================
+OPENING
+========================= */
+
+.opening-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  1.1fr 1fr 1fr auto;
+
+  gap:18px;
+
+  align-items:center;
+}
+
+.total-box{
+
+  background:#f6faf7;
+
+  border:
+  1px solid #e7f1ea;
+
+  border-radius:18px;
+
+  padding:22px;
+}
+
+.total-box h4{
+
+  color:#0a6b2d;
+
+  font-size:15px;
+
+  margin-bottom:10px;
+}
+
+.total-box h2{
+
+  color:#0a6b2d;
+
+  font-size:28px;
+
+  font-weight:800;
+
+  margin-bottom:10px;
+}
+
+.total-box p{
+
+  color:#667085;
+
+  font-size:14px;
+}
+
+.input-group label{
+
+  display:block;
+
+  margin-bottom:10px;
+
+  font-size:14px;
+
+  color:#667085;
+}
+
+.input-group input{
+
+  width:100%;
+
+  height:52px;
+
+  border:
+  1px solid #dfe5e8;
+
+  border-radius:14px;
+
+  padding:0 16px;
+
+  font-size:16px;
+
+  outline:none;
+}
+
+.detail-btn{
+
+  height:52px;
+
+  padding:0 24px;
+
+  border:
+  1px solid #15803d;
+
+  background:white;
+
+  color:#15803d;
+
+  border-radius:14px;
+
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+  .saldo-wrapper{
+
+  position:relative;
+
+}
+
+.mini-detail-btn{
+
+  position:absolute;
+
+  top:2px;
+
+  right:0;
+
+  height:18px;
+
+  padding:0 10px;
+
+  border:none;
+
+  border-radius:999px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #178a43,
+    #116b34
+  );
+
+  color:white;
+
+  font-size:6px;
+
+  font-weight:400;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  box-shadow:
+  0 8px 18px rgba(17,107,52,.18);
+
+}
+
+.mini-detail-btn i{
+
+  font-size:10px;
+
+}
+
+/* =========================
+TABLE
+========================= */
+
+.table-box{
+
+  border:1px solid #edf1f3;
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  max-height:520px;
+}
+
+table{
+
+  width:100%;
+
+  border-collapse:collapse;
+}
+
+thead{
+
+  background:#f7faf8;
+}
+
+th{
+
+  padding:16px;
+
+  text-align:left;
+
+  font-size:14px;
+
+  position:sticky;
+
+  top:0;
+
+  background:#f7faf8;
+
+  z-index:10;
+
+}
+
+td{
+
+  padding:16px;
+
+  border-top:
+  1px solid #edf1f3;
+
+  font-size:14px;
+}
+
+.table-footer{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:16px;
+
+  font-size:14px;
+
+  color:#667085;
+}
+
+.green{
+
+  color:#15803d;
+
+  font-weight:700;
+}
+
+.red{
+  color:#dc2626;
+}
+
+.action-btn{
+
+  background:
+  linear-gradient(
+    135deg,
+    #0a6b2d,
+    #11853c
+  );
+
+  border:none;
+
+  color:white;
+
+  height:48px;
+
+  padding:0 22px;
+
+  border-radius:14px;
+
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+/* =========================
+RIGHT PANEL
+========================= */
+
+.side-panel{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:16px;
+}
+
+.summary-card{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:22px;
+
+  padding:22px;
+}
+
+.summary-card h3{
+
+  font-size:16px;
+
+  margin-bottom:8px;
+}
+
+.summary-card p{
+
+  color:#667085;
+
+  font-size:14px;
+
+  margin-bottom:18px;
+}
+
+.total-summary{
+
+  border:
+  1px solid #b7dfc0;
+
+  border-radius:18px;
+
+  padding:18px;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+}
+
+.total-summary h2{
+
+  color:#0a6b2d;
+
+  font-size:22px;
+
+  font-weight:800;
+}
+
+.summary-list{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:14px;
+}
+
+.summary-row{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  font-size:15px;
+}
+
+.divider{
+
+  border-top:
+  1px dashed #d7dee2;
+
+  margin:14px 0;
+}
+
+.balance-row{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:12px 0;
+
+  border-bottom:
+  1px solid #edf1f3;
+}
+
+.balance-total{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-top:16px;
+
+  color:#15803d;
+
+  font-weight:800;
+
+  font-size:18px;
+}
+
+.check-row{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:12px 0;
+}
+
+.balance-badge{
+
+  background:#e7f6eb;
+
+  color:#15803d;
+
+  padding:8px 14px;
+
+  border-radius:12px;
+
+  font-size:13px;
+
+  font-weight:700;
+}
+
+/* =========================
+BOTTOM BUTTON
+========================= */
+
+.bottom-actions{
+
+  display:grid;
+
+  grid-template-columns:
+  1fr 1fr 1.5fr;
+
+  gap:14px;
+
+  margin-top:18px;
+}
+
+.bottom-btn{
+
+  height:60px;
+
+  border:none;
+
+  border-radius:16px;
+
+  font-size:16px;
+
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.btn-light{
+
+  background:white;
+
+  border:
+  1px solid #e2e8ec;
+}
+
+.btn-green{
+
+  background:
+  linear-gradient(
+    135deg,
+    #0a6b2d,
+    #11853c
+  );
+
+  color:white;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:1200px){
+
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+
+  .opening-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .main-content{
+    margin-left:0;
+    padding:16px;
+  }
+
+  .topbar{
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .topbar h1{
+    font-size:28px;
+  }
+
+  .section-title{
+    font-size:24px;
+  }
+
+  .bottom-actions{
+    grid-template-columns:1fr;
+  }
+
+  .table-box{
+    overflow:auto;
+  }
+
+  table{
+    min-width:900px;
+  }
+
+}
+
+  /* =========================
+POPUP
+========================= */
+
+.popup-overlay{
+
+  position:fixed;
+
+  inset:0;
+
+  background:
+  rgba(0,0,0,.35);
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  z-index:9999;
+
+}
+
+.popup-overlay.active{
+
+  display:flex;
+
+}
+
+.saldo-popup,
+.tambah-popup{
+
+  width:700px;
+
+  background:white;
+
+  border-radius:22px;
+
+  padding:24px;
+
+  box-shadow:
+  0 20px 60px rgba(0,0,0,.15);
+
+}
+
+.tambah-popup{
+
+  width:340px;
+
+}
+
+.popup-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:20px;
+
+}
+
+.popup-header h3{
+
+  color:#116b34;
+
+  font-size:18px;
+
+}
+
+.close-popup{
+
+  border:none;
+
+  background:none;
+
+  font-size:20px;
+
+  cursor:pointer;
+
+}
+
+.add-saldo-btn{
+
+  height:42px;
+
+  padding:0 18px;
+
+  border:
+  1.5px solid #86c89c;
+
+  border-radius:12px;
+
+  background:white;
+
+  color:#15803d;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+}
+
+.add-saldo-btn i{
+
+  font-size:13px;
+
+}
+
+  .popup-actions{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+}
+
+.saldo-table{
+
+  width:100%;
+
+  border-collapse:collapse;
+
+}
+
+.saldo-table th,
+.saldo-table td{
+
+  border:
+  1px solid #edf1f3;
+
+  padding:14px;
+
+  font-size:14px;
+
+}
+
+.saldo-table th{
+
+  background:#f7faf8;
+
+  text-align:left;
+
+}
+
+.popup-form{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:14px;
+
+}
+
+.popup-form label{
+
+  font-size:14px;
+
+  font-weight:600;
+
+}
+
+.popup-form input{
+
+  height:48px;
+
+  border:
+  1px solid #dfe5e8;
+
+  border-radius:12px;
+
+  padding:0 14px;
+
+  outline:none;
+
+}
+
+.save-btn{
+
+  height:48px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #178a43,
+    #116b34
+  );
+
+  color:white;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
+  .aksi-btn{
+
+  width:28px;
+  height:28px;
+
+  border:none;
+
+  background:white;
+
+  border-radius:10px;
+
+  cursor:pointer;
+
+  color:#667085;
+
+}
+
+.aksi-btn:hover{
+
+  background:#f3f4f6;
+
+}
+
+.aksi-menu{
+
+  position:absolute;
+
+  top:42px;
+
+  right:0;
+
+  margin-top:8px;
+
+  background:white;
+
+  border:1px solid #edf1f3;
+
+  border-radius:14px;
+
+  padding:8px;
+
+  display:none;
+
+  flex-direction:column;
+
+  gap:4px;
+
+  min-width:120px;
+
+  box-shadow:
+  0 10px 30px rgba(0,0,0,.08);
+
+}
+
+ td{
+
+  padding:8px 16px;
+
+  border-top:1px solid #edf1f3;
+
+  font-size:14px;
+
+  position:relative;
+
+}
+
+.aksi-menu.active{
+
+  display:flex;
+
+}
+
+.aksi-menu button{
+
+  height:38px;
+
+  border:none;
+
+  background:white;
+
+  border-radius:10px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding:0 12px;
+
+  cursor:pointer;
+
+  font-size:14px;
+
+}
+
+.aksi-menu button:hover{
+
+  background:#f5f7f9;
+
+}
+
+.hapus-btn{
+
+  color:#dc2626;
+
+}
+
+  .aksi-menu{
+  z-index:999;
+}
+
+.aksi-menu button{
+  pointer-events:auto;
+}
+
+  .table-scroll{
+
+  max-height:420px;
+
+  overflow-y:auto;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div>
+
+<div class="logo">
+
+<div class="logo-icon">
+<i class="fa-solid fa-database"></i>
+</div>
+
+<span>Digital Report</span>
+
+</div>
+
+<div class="sidebar-menu">
+
+<a href="dashboard.html" class="sidebar-item">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</a>
+
+<a href="input.html" class="sidebar-item active">
+<i class="fa-solid fa-pen-to-square"></i>
+Input Laporan
+</a>
+
+<a href="database.html" class="sidebar-item">
+<i class="fa-solid fa-database"></i>
+Database
+</a>
+
+<a href="report.html" class="sidebar-item">
+<i class="fa-regular fa-clipboard"></i>
+Report
+</a>
+
+<div class="sidebar-title">
+MASTER DATA
+</div>
+
+<a href="database.html" class="sidebar-item">
+<i class="fa-solid fa-arrows-left-right"></i>
+Jenis Transaksi
+</a>
+
+<a href="database.html" class="sidebar-item">
+<i class="fa-solid fa-shapes"></i>
+Kategori
+</a>
+
+<a href="database.html" class="sidebar-item">
+<i class="fa-solid fa-filter-circle-dollar"></i>
+Efek Kategori
+</a>
+
+<a href="Sumber Saldo.html" class="sidebar-item">
+<i class="fa-solid fa-building-columns"></i>
+Akun Bank / ATM
+</a>
+
+<a href="datarange.html" class="sidebar-item">
+<i class="fa-solid fa-layer-group"></i>
+Data Range
+</a>
+
+<a href="rekap.html" class="sidebar-item">
+<i class="fa-regular fa-calendar"></i>
+Rekap Bulanan
+</a>
+
+</div>
+
+</div>
+
+<div class="sidebar-profile">
+
+<div class="profile-top">
+
+<div class="profile-avatar">
+T
+</div>
+
+<div>
+
+<h4>Tokosayyida</h4>
+
+<p style="opacity:.7;font-size:13px;">
+Admin
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main-content">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div>
+
+<h1>
+Input Laporan Harian
+</h1>
+
+<p>
+Catat semua transaksi dan kondisi keuangan hari ini
+</p>
+
+</div>
+
+<div class="topbar-right">
+
+<div class="date-box">
+<i class="fa-regular fa-calendar"></i>
+22 Mei 2026
+<i class="fa-solid fa-chevron-down"></i>
+</div>
+
+<div class="user-box">
+
+<div class="profile-avatar"
+style="width:42px;height:42px;">
+T
+</div>
+
+<div>
+<div style="font-weight:700;">
+Tokosayyida
+</div>
+
+<div style="font-size:13px;color:#667085;">
+Admin
+</div>
+</div>
+
+<i class="fa-solid fa-chevron-down"
+style="margin-left:10px;"></i>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CONTENT GRID -->
+
+<div class="content-grid">
+
+<!-- LEFT -->
+
+<div>
+
+<!-- OPENING -->
+
+<div class="card">
+
+<div class="section-header">
+
+<div class="section-left">
+
+<div class="number-badge">
+1
+</div>
+
+<div>
+
+<div class="section-title">
+Opening Shift (Kondisi Awal)
+</div>
+
+<div class="section-desc">
+Masukkan total kas dan saldo awal sebelum transaksi hari ini
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="opening-grid">
+
+<div class="total-box">
+
+<h4>
+TOTAL MODAL HARI INI
+</h4>
+
+<h2 id="totalModal">
+Rp 88.294.480
+</h2>
+
+<p>
+Total Kas + Total Saldo
+</p>
+
+</div>
+
+<div class="input-group">
+
+<label>
+Cash Pagi
+</label>
+
+<input
+type="text"
+id="cashPagi">
+
+</div>
+
+<div class="saldo-wrapper">
+
+<button
+class="mini-detail-btn"
+onclick="openSaldoPopup()">
+
+Lihat Detail
+<i class="fa-solid fa-arrow-right"></i>
+
+</button>
+
+<div class="input-group">
+
+<label>
+Total Saldo
+</label>
+
+<input
+type="text"
+id="totalSaldoInput"
+readonly>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- TRANSAKSI -->
+
+<div class="card"
+style="margin-top:18px;">
+
+<div class="section-header">
+
+<div class="section-left">
+
+<div class="number-badge">
+2
+</div>
+
+<div>
+
+<div class="section-title">
+Transaksi Nasabah
+</div>
+
+<div class="section-desc">
+Catat semua transaksi yang berasal dari nasabah
+</div>
+
+</div>
+
+</div>
+
+<button
+class="action-btn"
+onclick="openTransaksiPopup()">
+
+<i class="fa-solid fa-plus"></i>
+&nbsp;
+Tambah Transaksi
+
+</button>
+
+</div>
+
+  <div
+style="
+display:flex;
+justify-content:flex-start;
+margin-bottom:14px;
+">
+
+<div
+style="
+position:relative;
+width:260px;
+">
+
+<i
+class="fa-solid fa-magnifying-glass"
+style="
+position:absolute;
+left:14px;
+top:50%;
+transform:translateY(-50%);
+color:#94a3b8;
+font-size:13px;
+">
+</i>
+
+<input
+type="text"
+id="searchTransaksi"
+placeholder="Cari transaksi..."
+style="
+width:100%;
+height:46px;
+padding:0 16px 0 40px;
+border:1px solid #dfe5e8;
+border-radius:14px;
+outline:none;
+font-size:14px;
+background:white;
+">
+
+</div>
+
+</div>
+
+<div class="table-box">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>No</th>
+<th>Jenis Transaksi</th>
+<th>Nominal</th>
+<th>Admin</th>
+<th>Admin Bank</th>
+<th>Kategori</th>
+<th>Efek</th>
+<th>Keterangan</th>
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="transaksiTableBody">
+
+<tr id="emptyTransaksi">
+
+<td colspan="9"
+style="
+text-align:center;
+padding:40px;
+color:#94a3b8;
+font-size:14px;
+">
+
+Belum ada transaksi
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="table-footer">
+
+<div id="totalTransaksiText">
+Total 0 transaksi
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MUTASI -->
+
+<div class="card"
+style="margin-top:18px;">
+
+<div class="section-header">
+
+<div class="section-left">
+
+<div class="number-badge">
+3
+</div>
+
+<div>
+
+<div class="section-title">
+Mutasi Internal / Transaksi Operasional
+</div>
+
+<div class="section-desc">
+Catat mutasi saldo antar tempat, setoran, pengeluaran, tambahan saldo, dll (bukan transaksi nasabah)
+</div>
+
+</div>
+
+</div>
+
+<button
+class="detail-btn"
+onclick="openMutasiPopup()">
+
+<i class="fa-solid fa-plus"></i>
+&nbsp;
+Tambah Mutasi
+
+</button>
+
+</div>
+
+<div class="table-box">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>No</th>
+<th>Jenis Mutasi</th>
+<th>Nominal</th>
+<th>Admin Bank</th>
+<th>Kategori</th>
+<th>Efek</th>
+<th>Keterangan</th>
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="mutasiTableBody">
+
+<tr id="emptyMutasi">
+
+<td colspan="8"
+style="
+text-align:center;
+padding:40px;
+color:#94a3b8;
+font-size:14px;
+">
+
+Belum ada mutasi
+
+</td>
+
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+<div class="table-footer">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- BUTTON -->
+
+<div class="bottom-actions">
+
+<button type="button" class="bottom-btn btn-light" onclick="simpanDraft()">
+<i class="fa-regular fa-floppy-disk"></i>
+&nbsp;
+Simpan Draft
+</button>
+
+<button type="button" class="bottom-btn btn-light" onclick="resetLaporan()">
+<i class="fa-solid fa-rotate-left"></i>
+&nbsp;
+Reset
+</button>
+
+<button type="button" class="bottom-btn btn-green" onclick="finalisasiLaporan()">
+<i class="fa-regular fa-floppy-disk"></i>
+&nbsp;
+Simpan & Finalisasi Laporan
+</button>
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="side-panel">
+
+<div class="summary-card">
+
+<h3>
+REKAP HARI INI
+</h3>
+
+<p>
+Ringkasan otomatis berdasarkan input di samping
+</p>
+
+<div class="total-summary">
+
+<div>
+
+<div style="font-size:14px;">
+TOTAL PERPUTARAN
+</div>
+
+<h2 id="totalPerputaran">
+Rp 0
+</h2>
+
+<div style="margin-top:8px;font-size:14px;color:#667085;">
+Cash + Saldo Akhir
+</div>
+
+</div>
+
+<div style="font-size:42px;color:#16a34a;">
+↗
+</div>
+
+</div>
+
+</div>
+
+<div class="summary-card">
+
+<h3 style="margin-bottom:18px;">
+RINCIAN PENDAPATAN
+</h3>
+
+<div class="summary-list">
+
+<div class="summary-row">
+<span>TOTAL ADMIN</span>
+<strong id="totalAdmin">
+Rp 0
+</strong>
+</div>
+
+<div class="summary-row">
+<span>ADMIN BANK</span>
+<strong id="totalAdminBank">
+Rp 0
+</strong>
+</div>
+
+<div class="summary-row">
+
+  <span>FEE</span>
+
+  <span
+  id="feeDisplay"
+  style="
+  font-weight:700;
+  cursor:pointer;
+  ">
+  Rp 0
+  </span>
+
+  <input
+  type="text"
+  id="feeInput"
+  style="
+  display:none;
+  width:160px;
+  text-align:right;
+  border:none;
+  outline:none;
+  font-weight:700;
+  background:transparent;
+  "
+  >
+
+</div>
+
+<div class="divider"></div>
+
+<div class="summary-row">
+<span>TOTAL TRANSAKSI NASABAH</span>
+<strong id="jumlahTransaksi">
+0 Transaksi
+</strong>
+</div>
+
+</div>
+
+</div>
+
+<div class="summary-card">
+
+<h3>RINCIAN SALDO</h3>
+
+<div id="saldoAkhirList"></div>
+
+<div class="balance-total">
+
+<span>TOTAL SALDO AKHIR</span>
+
+<span id="totalSaldoAkhir">
+Rp 0
+</span>
+
+</div>
+
+</div>
+
+<div class="summary-card">
+
+<h3>
+TOTAL CASH AKHIR</h3>
+
+<div class="balance-row"
+style="border:none;">
+<strong id="totalCashAkhir">
+Rp 0
+</strong>
+</div>
+
+</div>
+
+<div class="summary-card">
+
+<h3>
+CEK KESEIMBANGAN
+</h3>
+
+<div class="check-row">
+
+<div style="display:flex;gap:10px;align-items:center;">
+<i class="fa-regular fa-circle-check" id="saldoBalanceIcon"
+style="color:#16a34a;"></i>
+
+<span>Saldo Balance</span>
+</div>
+
+<div class="balance-badge" id="saldoBalanceBadge">
+BALANCE
+</div>
+
+</div>
+
+<div class="check-row">
+
+<div style="display:flex;gap:10px;align-items:center;">
+<i class="fa-regular fa-circle-check" id="cashBalanceIcon"
+style="color:#16a34a;"></i>
+
+<span>Cash Balance</span>
+</div>
+
+<div class="balance-badge" id="cashBalanceBadge">
+BALANCE
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+  
+<!-- =========================
+POPUP DETAIL SALDO
+========================= -->
+
+<div class="popup-overlay" id="saldoPopup">
+
+  <div class="saldo-popup">
+
+    <div class="popup-header">
+
+  <h3>Detail Penempatan Saldo</h3>
+
+  <div class="popup-actions">
+
+    <button class="add-saldo-btn"
+    onclick="openTambahPopup()">
+
+      <i class="fa-solid fa-plus"></i>
+      Tambah Sumber Saldo
+
+    </button>
+
+    <button class="close-popup"
+    onclick="closeSaldoPopup()">
+    ✕
+    </button>
+
+  </div>
+  </div>
+
+    <table class="saldo-table">
+
+      <thead>
+        <tr>
+  <th>Sumber</th>
+  <th>Nominal</th>
+  <th>Keterangan</th>
+  <th style="width:70px;text-align:center;">
+    Aksi
+  </th>
+</tr>
+      </thead>
+
+      <tbody id="saldoTableBody">
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<!-- =========================
+POPUP TAMBAH SALDO
+========================= -->
+
+<div class="popup-overlay"
+id="tambahPopup">
+
+  <div class="tambah-popup">
+
+    <div class="popup-header">
+
+      <h3>Tambah Sumber Saldo</h3>
+
+      <button class="close-popup"
+      onclick="closeTambahPopup()">
+      ✕
+      </button>
+
+    </div>
+
+    <div class="popup-form">
+
+      <label>Nama Sumber</label>
+
+     <input
+type="text"
+id="namaSumber"
+list="listSumberSaldo"
+placeholder="Pilih sumber saldo">
+
+      <label>Nominal</label>
+
+      <input
+      type="text"
+      id="nominalSumber"
+      placeholder="Rp 0">
+
+      <label>Keterangan</label>
+
+      <input
+      type="text"
+      id="keteranganSumber"
+      placeholder="Contoh: Saldo ATM 3">
+
+      <button class="save-btn"
+      onclick="simpanSaldo()">
+
+      Simpan
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+  <!-- =========================
+POPUP TRANSAKSI
+========================= -->
+
+<div
+class="popup-overlay"
+id="transaksiPopup">
+
+<div class="saldo-popup"
+style="width:500px;">
+
+<div class="popup-header">
+
+<h3>Tambah Transaksi</h3>
+
+<button
+class="close-popup"
+onclick="closeTransaksiPopup()">
+✕
+</button>
+
+</div>
+
+<div class="popup-form">
+
+<label>Jenis Transaksi</label>
+
+<input
+type="text"
+id="jenisTransaksi"
+list="jenisTransaksiList"
+placeholder="Pilih atau ketik transaksi"
+style="
+height:48px;
+border:1px solid #dfe5e8;
+border-radius:12px;
+padding:0 14px;
+outline:none;
+font-size:14px;
+background:white;
+width:100%;
+">
+
+<datalist id="jenisTransaksiList"></datalist>
+
+<label>Nominal</label>
+
+<input
+type="text"
+id="nominalTransaksi"
+placeholder="Rp 0">
+
+<label>Admin</label>
+
+<input
+type="text"
+id="adminTransaksi"
+placeholder="Rp 0">
+
+<label>Admin Bank</label>
+
+<input
+type="text"
+id="adminBankTransaksi"
+readonly>
+
+<label>Kategori</label>
+
+<input
+type="text"
+id="arahTransaksi"
+readonly>
+
+<label>Efek</label>
+
+<input
+type="text"
+id="cashTransaksi"
+readonly>
+
+<label>Sumber saldo</label>
+
+<input
+type="text"
+id="SumberSaldoTransaksi"
+readonly>
+
+<label>Keterangan</label>
+
+<input
+type="text"
+id="keteranganTransaksi"
+placeholder="Nama Nasabah">
+
+<button
+class="save-btn"
+onclick="simpanTransaksi()">
+
+Simpan
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+  
+<script>
+
+/* =========================
+FORMAT
+========================= */
+
+function parseRupiah(value){
+
+  return Number(
+    value.replace(/[^0-9]/g,'')
+  ) || 0;
+
+}
+
+function formatRupiah(number){
+
+  return 'Rp ' +
+  number.toLocaleString('id-ID');
+
+}
+
+function isSaldoIn(arah){
+
+return String(arah || "")
+.toLowerCase()
+.includes("saldo in");
+
+}
+
+function isSaldoOut(arah){
+
+return String(arah || "")
+.toLowerCase()
+.includes("saldo out");
+
+}
+
+function isCashIn(cash){
+
+return String(cash || "")
+.toLowerCase()
+.includes("cash in");
+
+}
+
+function isCashOut(cash){
+
+return String(cash || "")
+.toLowerCase()
+.includes("cash out");
+
+}
+
+function getJenisTransaksiMaster(){
+
+try{
+
+return JSON.parse(
+localStorage.getItem("jenisTransaksiData") || "[]"
+);
+
+}catch(e){
+
+return [];
+
+}
+
+}
+
+function getTransaksiMeta(item){
+
+let arah =
+item.arah || "";
+
+let cash =
+item.cash || "";
+
+let sumber =
+item.SumberSaldo || "";
+
+if(
+!arah ||
+!cash
+){
+
+const master =
+getJenisTransaksiMaster().find(j =>
+
+String(j.nama || "")
+.toLowerCase()
+.trim() ===
+
+String(item.jenis || "")
+.toLowerCase()
+.trim()
+
+);
+
+if(master){
+
+if(!arah) arah = master.kategori || "";
+if(!cash) cash = master.efek || "";
+if(!sumber) sumber = master.SumberSaldo || "";
+
+}
+
+}
+
+return { arah, cash, sumber };
+
+}
+
+function resolveSaldoKey(map, sumber){
+
+const nama =
+String(sumber || "").trim();
+
+if(!nama) return null;
+
+if(map[nama] !== undefined) return nama;
+
+const found =
+Object.keys(map).find(k =>
+
+k.toLowerCase() === nama.toLowerCase()
+
+);
+
+if(found) return found;
+
+map[nama] = 0;
+return nama;
+
+}
+
+function hitungTotalSaldoAwal(){
+
+return saldoData.reduce((total, item) =>
+
+total + parseRupiah(item.nominal || "0")
+
+, 0);
+
+}
+
+function hitungRekap(){
+
+const saldoAkhir = {};
+
+saldoData.forEach(item => {
+
+saldoAkhir[item.nama] =
+parseRupiah(item.nominal || "0");
+
+});
+
+let cashAkhir =
+parseRupiah(
+cashPagiInput?.value || "0"
+);
+
+let totalAdmin = 0;
+let totalAdminBank = 0;
+
+const applySaldo = (meta, nominal) => {
+
+const key =
+resolveSaldoKey(
+saldoAkhir,
+meta.sumber
+);
+
+if(!key) return;
+
+if(isSaldoIn(meta.arah)){
+
+saldoAkhir[key] += nominal;
+
+}else if(isSaldoOut(meta.arah)){
+
+saldoAkhir[key] -= nominal;
+
+}
+
+};
+
+const applyCash = (meta, nominal, admin, adminBank) => {
+
+if(isCashIn(meta.cash)){
+
+cashAkhir += nominal;
+
+}else if(isCashOut(meta.cash)){
+
+cashAkhir -= nominal;
+
+}
+
+cashAkhir += admin;
+cashAkhir -= adminBank;
+
+};
+
+transaksiData.forEach(item => {
+
+const nominal =
+parseRupiah(item.nominal || "0");
+
+const admin =
+parseRupiah(item.admin || "0");
+
+const adminBank =
+parseRupiah(item.adminBank || "0");
+
+const meta =
+getTransaksiMeta(item);
+
+applySaldo(meta, nominal);
+applyCash(meta, nominal, admin, adminBank);
+
+totalAdmin += admin;
+totalAdminBank += adminBank;
+
+});
+
+(mutasiData || []).forEach(item => {
+
+const nominal =
+parseRupiah(item.nominal || "0");
+
+const adminBank =
+parseRupiah(item.adminBank || "0");
+
+const meta =
+getTransaksiMeta(item);
+
+applySaldo(meta, nominal);
+applyCash(meta, nominal, 0, adminBank);
+
+totalAdminBank += adminBank;
+
+});
+
+const fee =
+Number(
+localStorage.getItem("feeTotal")
+) || 0;
+
+cashAkhir += fee;
+
+const totalSaldoAkhir =
+Object.values(saldoAkhir)
+.reduce((a, b) => a + b, 0);
+
+const cashPagi =
+parseRupiah(
+cashPagiInput?.value || "0"
+);
+
+const totalSaldoAwal =
+hitungTotalSaldoAwal();
+
+const modalAwal =
+cashPagi + totalSaldoAwal;
+
+const modalAkhir =
+cashAkhir + totalSaldoAkhir;
+
+const expectedAkhir =
+modalAwal + totalAdmin + fee - totalAdminBank;
+
+return {
+saldoAkhir,
+totalSaldoAkhir,
+cashAkhir,
+totalAdmin,
+totalAdminBank,
+cashPagi,
+totalSaldoAwal,
+modalAwal,
+modalAkhir,
+expectedAkhir
+};
+
+}
+
+function setBalanceBadge(badgeEl, iconEl, ok){
+
+if(!badgeEl) return;
+
+badgeEl.textContent =
+ok ? "BALANCE" : "TIDAK BALANCE";
+
+badgeEl.style.background =
+ok ? "#dcfce7" : "#fee2e2";
+
+badgeEl.style.color =
+ok ? "#15803d" : "#b91c1c";
+
+if(iconEl){
+
+iconEl.className =
+ok
+? "fa-regular fa-circle-check"
+: "fa-regular fa-circle-xmark";
+
+iconEl.style.color =
+ok ? "#16a34a" : "#dc2626";
+
+}
+
+}
+
+function updateCekKeseimbangan(rekap){
+
+const selisih =
+rekap.modalAkhir - rekap.expectedAkhir;
+
+const ok =
+Math.abs(selisih) < 1;
+
+setBalanceBadge(
+document.getElementById("saldoBalanceBadge"),
+document.getElementById("saldoBalanceIcon"),
+ok
+);
+
+setBalanceBadge(
+document.getElementById("cashBalanceBadge"),
+document.getElementById("cashBalanceIcon"),
+ok
+);
+
+}
+
+function updateAllRekap(){
+
+const rekap =
+hitungRekap();
+
+const list =
+document.getElementById("saldoAkhirList");
+
+const totalSaldoEl =
+document.getElementById("totalSaldoAkhir");
+
+if(list){
+
+list.innerHTML = "";
+
+Object.keys(rekap.saldoAkhir)
+.sort((a, b) => a.localeCompare(b))
+.forEach(nama => {
+
+list.innerHTML += `
+
+<div class="balance-row">
+
+<span>${nama}</span>
+
+<strong>
+${formatRupiah(rekap.saldoAkhir[nama])}
+</strong>
+
+</div>
+
+`;
+
+});
+
+}
+
+if(totalSaldoEl){
+
+totalSaldoEl.textContent =
+formatRupiah(rekap.totalSaldoAkhir);
+
+}
+
+const cashEl =
+document.getElementById("totalCashAkhir");
+
+if(cashEl){
+
+cashEl.textContent =
+formatRupiah(rekap.cashAkhir);
+
+}
+
+const perputaranEl =
+document.getElementById("totalPerputaran");
+
+if(perputaranEl){
+
+perputaranEl.textContent =
+formatRupiah(
+rekap.cashAkhir + rekap.totalSaldoAkhir
+);
+
+}
+
+const totalAdminEl =
+document.getElementById("totalAdmin");
+
+if(totalAdminEl){
+
+totalAdminEl.textContent =
+formatRupiah(rekap.totalAdmin);
+
+}
+
+const totalAdminBankEl =
+document.getElementById("totalAdminBank");
+
+if(totalAdminBankEl){
+
+totalAdminBankEl.textContent =
+formatRupiah(rekap.totalAdminBank);
+
+}
+
+const jumlahEl =
+document.getElementById("jumlahTransaksi");
+
+if(jumlahEl){
+
+jumlahEl.textContent =
+transaksiData.length + " Transaksi";
+
+}
+
+updateCekKeseimbangan(rekap);
+
+}
+
+/* =========================
+ELEMENT
+========================= */
+
+const cashPagiInput =
+document.getElementById('cashPagi');
+
+const totalSaldoInput =
+document.getElementById(
+  'totalSaldoInput'
+);
+
+const totalModal =
+document.getElementById('totalModal');
+
+/* =========================
+LOAD DATA LOCAL STORAGE
+========================= */
+
+const savedCash =
+localStorage.getItem('cashPagi');
+
+if(savedCash){
+
+  cashPagiInput.value =
+  savedCash;
+
+}else{
+
+  cashPagiInput.value =
+  'Rp 23.890.509';
+
+}
+
+/* =========================
+UPDATE TOTAL MODAL
+========================= */
+
+function updateTotalModal(){
+
+  const cashPagi =
+  parseRupiah(
+    cashPagiInput.value
+  );
+
+  const totalSaldo =
+  parseRupiah(
+    totalSaldoInput.value
+  );
+
+  const total =
+  cashPagi + totalSaldo;
+
+  totalModal.textContent =
+  formatRupiah(total);
+
+}
+
+/* =========================
+FORMAT SAAT ENTER / KELUAR INPUT
+========================= */
+
+cashPagiInput.addEventListener(
+'blur',
+function(){
+
+  const angka =
+  parseRupiah(this.value);
+
+  this.value =
+  formatRupiah(angka);
+
+  localStorage.setItem(
+    'cashPagi',
+    this.value
+  );
+
+  updateTotalModal();
+
+  updateAllRekap();
+
+});
+
+/* =========================
+FORMAT SAAT TEKAN ENTER
+========================= */
+
+cashPagiInput.addEventListener(
+'keydown',
+function(e){
+
+  if(e.key === 'Enter'){
+
+    e.preventDefault();
+
+    this.blur();
+
+  }
+});
+
+/* =========================
+AUTO LOAD TOTAL
+========================= */
+
+updateTotalModal();
+
+
+  /* =========================
+POPUP
+========================= */
+
+function openSaldoPopup(){
+
+  document
+  .getElementById('saldoPopup')
+  .classList.add('active');
+
+}
+
+function closeSaldoPopup(){
+
+  document
+  .getElementById('saldoPopup')
+  .classList.remove('active');
+
+}
+
+function openTambahPopup(){
+
+  const akunBankData =
+  JSON.parse(
+    localStorage.getItem(
+      "akunBankData"
+    ) || "[]"
+  );
+
+  const inputNama =
+  document.getElementById(
+    "namaSumber"
+  );
+
+  const listId =
+  "listSumberSaldo";
+
+  let datalist =
+  document.getElementById(
+    listId
+  );
+
+  if(!datalist){
+
+    datalist =
+    document.createElement(
+      "datalist"
+    );
+
+    datalist.id = listId;
+
+    document.body.appendChild(
+      datalist
+    );
+
+  }
+
+  datalist.innerHTML = "";
+
+  akunBankData.forEach(item=>{
+
+    datalist.innerHTML += `
+      <option value="${item.nama}">
+    `;
+
+  });
+
+  inputNama.setAttribute(
+    "list",
+    listId
+  );
+
+  document
+  .getElementById('tambahPopup')
+  .classList.add('active');
+
+}
+
+function closeTambahPopup(){
+
+  document
+  .getElementById('tambahPopup')
+  .classList.remove('active');
+
+}
+
+/* =========================
+DATA SALDO
+========================= */
+
+let saldoData = [];
+
+let editIndex = null;
+
+const savedSaldo =
+localStorage.getItem('saldoData');
+
+if(savedSaldo){
+
+  saldoData =
+  JSON.parse(savedSaldo);
+
+}
+
+const akunBankData =
+JSON.parse(
+localStorage.getItem(
+"akunBankData"
+) || "[]"
+);
+  
+/* =========================
+RENDER TABLE
+========================= */
+
+function renderSaldoTable(){
+
+  const table =
+  document.getElementById(
+    'saldoTableBody'
+  );
+
+  table.innerHTML = '';
+
+  let total = 0;
+
+  saldoData.forEach((item,index) => {
+   total += parseRupiah(
+      item.nominal
+    );
+
+   table.innerHTML += `
+
+  <tr>
+
+    <td>${item.nama}</td>
+
+    <td>${item.nominal}</td>
+
+    <td>${item.ket}</td>
+
+    <td
+style="
+text-align:center;
+position:relative;
+">
+
+  <button
+  type="button"
+  class="aksi-btn"
+  onclick="toggleMenu(${index})">
+
+    <i class="fa-solid fa-ellipsis-vertical"></i>
+
+  </button>
+
+  <div
+  class="aksi-menu"
+  id="menu-${index}">
+
+    <button
+    type="button"
+    onclick="editSaldo(${index})">
+
+      <i class="fa-solid fa-pen"></i>
+      Edit
+
+    </button>
+
+    <button
+    type="button"
+    class="hapus-btn"
+    onclick="hapusSaldo(${index})">
+
+      <i class="fa-solid fa-trash"></i>
+      Hapus
+
+    </button>
+
+  </div>
+
+</td>
+
+  </tr>
+
+`;
+
+  });
+
+ totalSaldoInput.value =
+formatRupiah(total);
+
+updateTotalModal();
+
+updateAllRekap();
+
+  table.innerHTML += `
+
+    <tr>
+
+      <td
+      style="
+      font-weight:800;
+      color:#15803d;
+      ">
+      TOTAL SALDO
+      </td>
+
+      <td
+      colspan="2"
+      style="
+      font-weight:800;
+      color:#15803d;
+      ">
+      ${formatRupiah(total)}
+      </td>
+
+    </tr>
+
+  `;
+
+}
+
+
+function renderSaldoAkhir(){
+
+updateAllRekap();
+
+}
+  
+
+/* =========================
+SIMPAN SALDO
+========================= */
+
+function simpanSaldo(){
+
+  const nama =
+  document.getElementById(
+    'namaSumber'
+  ).value;
+
+  const nominal =
+  document.getElementById(
+    'nominalSumber'
+  ).value;
+
+  const ket =
+  document.getElementById(
+    'keteranganSumber'
+  ).value;
+
+ const dataBaru = {
+
+  nama:nama,
+
+  nominal:nominal,
+
+  ket:ket
+
+};
+
+if(editIndex !== null){
+
+  saldoData[editIndex] =
+  dataBaru;
+
+  editIndex = null;
+
+}else{
+
+  saldoData.push(dataBaru);
+
+}
+
+  localStorage.setItem(
+    'saldoData',
+    JSON.stringify(saldoData)
+  );
+
+  renderSaldoTable();
+
+document.getElementById(
+'namaSumber'
+).value = '';
+
+document.getElementById(
+'nominalSumber'
+).value = '';
+
+document.getElementById(
+'keteranganSumber'
+).value = '';
+  
+
+  closeTambahPopup();
+
+}
+
+/* LOAD */
+
+// renderSaldoTable();
+  
+const nominalInput =
+document.getElementById(
+  'nominalSumber'
+);
+
+nominalInput.addEventListener(
+'blur',
+function(){
+
+  const angka =
+  parseRupiah(this.value);
+
+  this.value =
+  formatRupiah(angka);
+
+});
+
+  function toggleMenu(index){
+
+  const menuDipilih =
+  document.getElementById(
+    `menu-${index}`
+  );
+
+  const sudahAktif =
+  menuDipilih.classList.contains(
+    'active'
+  );
+
+  const semuaMenu =
+  document.querySelectorAll(
+    '.aksi-menu'
+  );
+
+  semuaMenu.forEach(menu => {
+
+    menu.classList.remove(
+      'active'
+    );
+
+  });
+
+  if(!sudahAktif){
+
+    menuDipilih.classList.add(
+      'active'
+    );
+
+  }
+
+}
+
+function hapusSaldo(index){
+
+  saldoData.splice(index,1);
+
+  localStorage.setItem(
+    'saldoData',
+    JSON.stringify(saldoData)
+  );
+
+  renderSaldoTable();
+
+}
+
+function editSaldo(index){
+
+  const semuaMenu =
+  document.querySelectorAll(
+    '.aksi-menu'
+  );
+
+  semuaMenu.forEach(menu => {
+
+    menu.classList.remove(
+      'active'
+    );
+
+  });
+
+  const data =
+  saldoData[index];
+
+  document.getElementById(
+    'namaSumber'
+  ).value = data.nama;
+
+  document.getElementById(
+    'nominalSumber'
+  ).value = data.nominal;
+
+  document.getElementById(
+    'keteranganSumber'
+  ).value = data.ket;
+
+  editIndex = index;
+
+  openTambahPopup();
+
+}
+
+  /* =========================
+TRANSAKSI NASABAH
+========================= */
+
+let transaksiData =
+JSON.parse(
+  localStorage.getItem(
+    'transaksiData'
+  )
+) || [];
+
+    let editTransaksiIndex = null;
+
+/* =========================
+POPUP
+========================= */
+
+function openTransaksiPopup(){
+
+  document
+  .getElementById('transaksiPopup')
+  .classList.add('active');
+
+  setTimeout(() => {
+
+    document
+    .getElementById('jenisTransaksi')
+    .focus();
+
+  },100);
+
+  document
+.getElementById(
+"transaksiPopup"
+)
+.dataset.mode =
+"transaksi";
+
+}
+
+function closeTransaksiPopup(){
+
+  document
+  .getElementById('transaksiPopup')
+  .classList.remove('active');
+
+}
+
+
+  function toggleTransaksiMenu(index){
+
+  document
+  .querySelectorAll(
+    '[id^="transaksi-menu-"]'
+  )
+  .forEach(menu=>{
+
+    menu.classList.remove(
+      'active'
+    );
+
+  });
+
+  document
+  .getElementById(
+    `transaksi-menu-${index}`
+  )
+  .classList.toggle(
+    'active'
+  );
+
+}
+
+  function hapusTransaksi(index){
+
+  transaksiData.splice(
+    index,
+    1
+  );
+
+  localStorage.setItem(
+    'transaksiData',
+    JSON.stringify(transaksiData)
+  );
+
+  renderTransaksi();
+
+}
+
+  function duplicateTransaksi(index){
+
+  transaksiData.splice(
+    index + 1,
+    0,
+    {
+      ...transaksiData[index]
+    }
+  );
+
+  localStorage.setItem(
+    'transaksiData',
+    JSON.stringify(transaksiData)
+  );
+
+  renderTransaksi();
+
+}
+
+  function editTransaksi(index){
+
+  const data =
+  transaksiData[index];
+
+  document.getElementById(
+    'jenisTransaksi'
+  ).value =
+  data.jenis;
+
+  document.getElementById(
+    'nominalTransaksi'
+  ).value =
+  data.nominal;
+
+  document.getElementById(
+    'adminTransaksi'
+  ).value =
+  data.admin;
+
+  document.getElementById(
+    'adminBankTransaksi'
+  ).value =
+  data.adminBank;
+
+  document.getElementById(
+    'arahTransaksi'
+  ).value =
+  data.arah;
+
+  document.getElementById(
+    'cashTransaksi'
+  ).value =
+  data.cash;
+
+document.getElementById(
+'SumberSaldoTransaksi'
+).value =
+data.SumberSaldo || '';
+    
+
+  document.getElementById(
+    'keteranganTransaksi'
+  ).value =
+  data.keterangan;
+
+  editTransaksiIndex =
+  index;
+
+  openTransaksiPopup();
+
+}
+
+/* =========================
+RENDER TABLE
+========================= */
+
+function renderTransaksi(){
+
+  const keyword =
+  document
+  .getElementById('searchTransaksi')
+  .value
+  .toLowerCase();
+
+  const table =
+  document.getElementById(
+    'transaksiTableBody'
+  );
+
+  table.innerHTML = '';
+
+  if(transaksiData.length === 0){
+
+    table.innerHTML = `
+
+    <tr id="emptyTransaksi">
+
+      <td colspan="9"
+      style="
+      text-align:center;
+      padding:40px;
+      color:#94a3b8;
+      font-size:14px;
+      ">
+
+      Belum ada transaksi
+
+      </td>
+
+    </tr>
+
+    `;
+
+updateAllRekap();
+return;
+
+    
+  }
+
+  const filteredData =
+
+transaksiData.filter(item =>
+
+  item.jenis.toLowerCase().includes(keyword)
+
+  ||
+
+  item.keterangan.toLowerCase().includes(keyword)
+
+  ||
+
+  item.nominal.toLowerCase().includes(keyword)
+
+  ||
+
+  item.admin.toLowerCase().includes(keyword)
+
+  ||
+
+  item.adminBank.toLowerCase().includes(keyword)
+
+  ||
+
+  item.arah.toLowerCase().includes(keyword)
+
+  ||
+
+  item.cash.toLowerCase().includes(keyword)
+
+);
+
+filteredData.forEach((item,index)=>{
+
+    table.innerHTML += `
+
+    <tr>
+
+      <td>${index + 1}</td>
+
+      <td>${item.jenis}</td>
+
+      <td>${item.nominal}</td>
+
+      <td>${item.admin}</td>
+
+      <td>${item.adminBank}</td>
+
+      <td class="${
+  item.arah.includes('Saldo In')
+  ? 'green'
+  : 'red'
+}">
+  ${item.arah}
+</td>
+
+      <td class="${
+  item.cash.includes('Cash In')
+  ? 'green'
+  : 'red'
+}">
+  ${item.cash}
+</td>
+
+      <td>${item.keterangan}</td>
+
+      <td
+style="
+position:relative;
+text-align:center;
+">
+
+<button
+class="aksi-btn"
+onclick="toggleTransaksiMenu(${index})">
+
+<i class="fa-solid fa-ellipsis-vertical"></i>
+
+</button>
+
+<div
+class="aksi-menu"
+id="transaksi-menu-${index}">
+
+<button
+onclick="editTransaksi(${index})">
+
+<i class="fa-solid fa-pen"></i>
+Edit
+
+</button>
+
+<button
+onclick="duplicateTransaksi(${index})">
+
+<i class="fa-solid fa-copy"></i>
+Duplicate
+
+</button>
+
+<button
+class="hapus-btn"
+onclick="hapusTransaksi(${index})">
+
+<i class="fa-solid fa-trash"></i>
+Hapus
+
+</button>
+
+</div>
+
+</td>
+
+    </tr>
+
+    `;
+
+  });
+
+  if(table.innerHTML === ''){
+
+    table.innerHTML = `
+
+    <tr>
+
+      <td colspan="9"
+      style="
+      text-align:center;
+      padding:40px;
+      color:#94a3b8;
+      font-size:14px;
+      ">
+
+      Transaksi tidak ditemukan
+
+      </td>
+
+    </tr>
+
+    `;
+
+  }
+
+  document.getElementById(
+  'totalTransaksiText'
+).textContent =
+
+keyword
+
+? `${filteredData.length} dari ${transaksiData.length} transaksi`
+
+: `Total ${transaksiData.length} transaksi`;
+
+
+  updateAllRekap();
+}
+
+
+function updateRingkasanPendapatan(){
+
+updateAllRekap();
+
+}
+
+function updateCashAkhir(){
+
+updateAllRekap();
+
+}
+
+/* =========================
+SIMPAN TRANSAKSI
+========================= */
+
+function simpanTransaksi(){
+
+  const jenis =
+  document.getElementById(
+    'jenisTransaksi'
+  ).value;
+
+  const nominal =
+  document.getElementById(
+    'nominalTransaksi'
+  ).value;
+
+  const admin =
+  document.getElementById(
+    'adminTransaksi'
+  ).value;
+
+  const adminBank =
+  document.getElementById(
+    'adminBankTransaksi'
+  ).value;
+
+  const arah =
+  document.getElementById(
+    'arahTransaksi'
+  ).value;
+
+  const cash =
+  document.getElementById(
+    'cashTransaksi'
+  ).value;
+
+  const SumberSaldo =
+document.getElementById(
+'SumberSaldoTransaksi'
+).value;
+
+  const keterangan =
+  document.getElementById(
+    'keteranganTransaksi'
+  ).value;
+
+  if(
+document
+.getElementById(
+"transaksiPopup"
+)
+.dataset.mode ===
+"mutasi"
+){
+
+mutasiData.push({
+
+jenis,
+nominal,
+adminBank,
+arah,
+cash,
+SumberSaldo,
+keterangan
+
+});
+
+localStorage.setItem(
+"mutasiData",
+JSON.stringify(
+mutasiData
+)
+);
+
+renderMutasi();
+
+/* kosongkan form */
+
+document.getElementById(
+'jenisTransaksi'
+).value = '';
+
+document.getElementById(
+'nominalTransaksi'
+).value = '';
+
+document.getElementById(
+'adminTransaksi'
+).value = '';
+
+document.getElementById(
+'adminBankTransaksi'
+).value = '';
+
+document.getElementById(
+'arahTransaksi'
+).value = '';
+
+document.getElementById(
+'cashTransaksi'
+).value = '';
+
+document.getElementById(
+'keteranganTransaksi'
+).value = '';
+
+closeTransaksiPopup();
+
+return;
+
+}
+
+ const dataBaru = {
+
+  jenis,
+  nominal,
+  admin,
+  adminBank,
+  arah,
+  cash,
+  SumberSaldo,
+  keterangan
+
+};
+
+if(
+  editTransaksiIndex !== null
+){
+
+  transaksiData[
+    editTransaksiIndex
+  ] = dataBaru;
+
+  editTransaksiIndex =
+  null;
+
+}else{
+
+  transaksiData.push(
+    dataBaru
+  );
+
+}
+
+localStorage.setItem(
+  'transaksiData',
+  JSON.stringify(transaksiData)
+);
+
+  renderTransaksi();
+
+  /* kosongin form */
+
+  document.getElementById(
+    'jenisTransaksi'
+  ).value = '';
+
+  document.getElementById(
+    'nominalTransaksi'
+  ).value = '';
+
+  document.getElementById(
+    'adminTransaksi'
+  ).value = '';
+
+  document.getElementById(
+    'adminBankTransaksi'
+  ).value = '';
+
+  document.getElementById(
+    'arahTransaksi'
+  ).value = '';
+
+  document.getElementById(
+    'cashTransaksi'
+  ).value = '';
+
+  document.getElementById(
+'SumberSaldoTransaksi'
+).value = '';
+
+  document.getElementById(
+    'keteranganTransaksi'
+  ).value = '';
+
+  closeTransaksiPopup();
+
+}
+
+/* =========================
+FORMAT RUPIAH
+========================= */
+
+[
+'nominalTransaksi',
+'adminTransaksi',
+'adminBankTransaksi'
+].forEach(id=>{
+
+  document
+  .getElementById(id)
+  .addEventListener(
+    'blur',
+    function(){
+
+      const angka =
+      parseRupiah(this.value);
+
+      this.value =
+      formatRupiah(angka);
+
+    }
+  );
+
+});
+
+  document
+.getElementById('searchTransaksi')
+.addEventListener(
+'input',
+renderTransaksi
+);
+
+/* =========================
+LOAD JENIS TRANSAKSI
+========================= */
+
+function loadJenisTransaksi(){
+
+  const list =
+  document.getElementById(
+    'jenisTransaksiList'
+  );
+
+  const data =
+  JSON.parse(
+    localStorage.getItem(
+      'jenisTransaksiData'
+    )
+  ) || [];
+
+  list.innerHTML = '';
+
+  data.forEach(item => {
+
+    list.innerHTML += `
+      <option value="${item.nama}">
+    `;
+
+  });
+
+}
+
+loadJenisTransaksi();
+  
+
+  /* =========================
+ENTER KE FIELD BERIKUTNYA
+========================= */
+
+const formFields = [
+
+  document.getElementById('jenisTransaksi'),
+  document.getElementById('nominalTransaksi'),
+  document.getElementById('adminTransaksi'),
+  document.getElementById('adminBankTransaksi'),
+  document.getElementById('arahTransaksi'),
+  document.getElementById('cashTransaksi'),
+  document.getElementById('keteranganTransaksi')
+
+];
+
+formFields.forEach((field,index)=>{
+
+  field.addEventListener(
+    'keydown',
+    function(e){
+
+      if(e.key === 'Enter'){
+
+        e.preventDefault();
+
+        const nextField =
+        formFields[index + 1];
+
+        if(nextField){
+
+          nextField.focus();
+
+        }else{
+
+          simpanTransaksi();
+
+        }
+
+      }
+
+    }
+  );
+
+});
+
+  /* =========================
+AUTO DATA TRANSAKSI
+========================= */
+
+function isiMetaDariJenis(jenisNama){
+
+  const jenis =
+  String(jenisNama || "")
+  .toLowerCase()
+  .trim();
+
+  if(!jenis) return;
+
+  const data =
+  getJenisTransaksiMaster();
+
+  const transaksi =
+  data.find(item =>
+
+  item.nama
+  .toLowerCase()
+  .trim() === jenis
+
+  );
+
+  if(!transaksi) return;
+
+  /* KATEGORI */
+
+  document.getElementById(
+    'arahTransaksi'
+  ).value =
+  transaksi.kategori;
+
+  /* EFEK */
+
+  document.getElementById(
+    'cashTransaksi'
+  ).value =
+  transaksi.efek;
+
+  document.getElementById(
+'SumberSaldoTransaksi'
+).value =
+transaksi.SumberSaldo || '';
+
+  /* ADMIN BANK */
+
+  const rangesJenis =
+  ambilRangesTransaksi(transaksi);
+
+  const firstValidRange =
+  rangesJenis.find(
+    r => Number(r.charge) > 0
+  );
+
+  if(firstValidRange){
+
+    document.getElementById(
+      'adminBankTransaksi'
+    ).value =
+    Number(firstValidRange.charge)
+    .toLocaleString('id-ID');
+
+  }
+
+}
+
+document
+.getElementById('jenisTransaksi')
+.addEventListener('change', function(){
+
+  isiMetaDariJenis(this.value);
+
+});
+
+document
+.getElementById('jenisTransaksi')
+.addEventListener('input', function(){
+
+  isiMetaDariJenis(this.value);
+
+});
+
+  /* =========================
+AUTO ADMIN DARI RANGE
+========================= */
+
+function ambilRangesTransaksi(transaksi){
+
+  if(
+    transaksi &&
+    transaksi.ranges &&
+    transaksi.ranges.length
+  ){
+    return transaksi.ranges;
+  }
+
+  try{
+    return JSON.parse(
+      localStorage.getItem('rangeData') || '[]'
+    );
+  }catch(e){
+    return [];
+  }
+
+}
+
+document
+.getElementById('nominalTransaksi')
+.addEventListener('input', function(){
+
+  const nominal =
+  Number(
+    this.value.replace(/[^\d]/g,'')
+  );
+
+  if(!nominal) return;
+
+  const jenis =
+  document
+  .getElementById(
+    'jenisTransaksi'
+  )
+  .value
+  .toLowerCase()
+  .trim();
+
+  const data =
+  JSON.parse(
+    localStorage.getItem(
+      'jenisTransaksiData'
+    )
+  ) || [];
+
+  const transaksi =
+  data.find(item =>
+    item.nama.toLowerCase().trim() === jenis
+  );
+
+  const ranges =
+  ambilRangesTransaksi(transaksi);
+
+  if(!ranges.length) return;
+
+  const range =
+  ranges.find(r =>
+    nominal >= Number(r.min) &&
+    nominal <= Number(r.max)
+  );
+
+  if(!range) return;
+
+  document.getElementById(
+    'adminTransaksi'
+  ).value =
+  Number(range.admin || 0)
+  .toLocaleString('id-ID');
+
+  if(Number(range.charge) > 0){
+
+    document.getElementById(
+      'adminBankTransaksi'
+    ).value =
+    Number(range.charge)
+    .toLocaleString('id-ID');
+
+  }
+
+});
+
+
+  /* =========================
+MUTASI
+========================= */
+
+let mutasiData =
+JSON.parse(
+localStorage.getItem(
+"mutasiData"
+)
+) || [];
+
+function openMutasiPopup(){
+
+document.getElementById("transaksiPopup")
+.dataset.mode = "mutasi";
+
+document.getElementById('jenisTransaksi').value = '';
+document.getElementById('nominalTransaksi').value = '';
+document.getElementById('adminTransaksi').value = '';
+document.getElementById('adminBankTransaksi').value = '';
+document.getElementById('arahTransaksi').value = '';
+document.getElementById('cashTransaksi').value = '';
+document.getElementById('keteranganTransaksi').value = '';
+
+document.getElementById("transaksiPopup")
+.classList.add("active");
+
+}
+
+function renderMutasi(){
+
+const table =
+document.getElementById(
+"mutasiTableBody"
+);
+
+table.innerHTML = "";
+
+let total = 0;
+
+if(mutasiData.length === 0){
+
+table.innerHTML = `
+<tr id="emptyMutasi">
+<td colspan="8"
+style="
+text-align:center;
+padding:40px;
+color:#94a3b8;
+">
+Belum ada mutasi
+</td>
+</tr>
+`;
+
+const totalText =
+document.getElementById(
+"totalMutasiText"
+);
+
+if(totalText){
+
+totalText.textContent =
+"Total 0 mutasi";
+
+}
+
+const totalNominal =
+document.getElementById(
+"totalMutasiNominal"
+);
+
+if(totalNominal){
+
+totalNominal.textContent =
+"Rp 0";
+
+}
+
+return;
+
+}
+
+mutasiData.forEach(
+(item,index)=>{
+
+total += parseRupiah(
+item.nominal
+);
+
+table.innerHTML += `
+<tr>
+
+<td>${index+1}</td>
+<td>${item.jenis}</td>
+<td>${item.nominal}</td>
+<td>${item.adminBank}</td>
+<td>${item.arah}</td>
+<td>${item.cash}</td>
+<td>${item.keterangan}</td>
+
+<td>
+<button
+class="aksi-btn"
+onclick="hapusMutasi(${index})">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+</td>
+
+</tr>
+`;
+
+});
+
+const totalText =
+document.getElementById(
+"totalMutasiText"
+);
+
+if(totalText){
+
+totalText.textContent =
+`Total ${mutasiData.length} mutasi`;
+
+}
+
+const totalNominal =
+document.getElementById(
+"totalMutasiNominal"
+);
+
+if(totalNominal){
+
+totalNominal.textContent =
+formatRupiah(total);
+
+}
+
+updateAllRekap();
+
+}
+function hapusMutasi(index){
+
+mutasiData.splice(
+index,
+1
+);
+
+localStorage.setItem(
+"mutasiData",
+JSON.stringify(
+mutasiData
+)
+);
+
+renderMutasi();
+
+}
+
+  /* =========================
+FEE EXCEL MODE
+========================= */
+
+const feeDisplay =
+document.getElementById(
+'feeDisplay'
+);
+
+const feeInput =
+document.getElementById(
+'feeInput'
+);
+
+let feeFormula =
+localStorage.getItem(
+'feeFormula'
+) || '=0';
+
+let feeTotal =
+Number(
+localStorage.getItem(
+'feeTotal'
+)
+) || 0;
+
+function renderFee(){
+
+  feeDisplay.textContent =
+  formatRupiah(
+    feeTotal
+  );
+
+}
+
+feeDisplay.addEventListener(
+'dblclick',
+function(){
+
+  feeDisplay.style.display =
+  'none';
+
+  feeInput.style.display =
+  'block';
+
+  feeInput.value =
+  feeFormula;
+
+  feeInput.focus();
+
+});
+
+function simpanFee(){
+
+  const rumus =
+  feeInput.value.trim();
+
+  try{
+
+    if(
+      !rumus.startsWith('=')
+    ){
+      throw 'error';
+    }
+
+    const hasil =
+    Function(
+      'return ' +
+      rumus.substring(1)
+    )();
+
+    feeFormula = rumus;
+
+    feeTotal = hasil;
+
+    localStorage.setItem(
+      'feeFormula',
+      feeFormula
+    );
+
+    localStorage.setItem(
+      'feeTotal',
+      feeTotal
+    );
+
+    renderFee();
+
+    updateAllRekap();
+
+    feeInput.style.display =
+    'none';
+
+    feeDisplay.style.display =
+    'block';
+
+ }catch{
+
+  feeInput.style.border =
+  '1px solid red';
+
+  return;
+
+}
+
+}
+
+feeInput.addEventListener(
+'keydown',
+function(e){
+
+  if(e.key === 'Enter'){
+
+    simpanFee();
+
+  }
+
+});
+
+feeInput.addEventListener(
+'blur',
+simpanFee
+);
+
+renderFee();
+
+renderSaldoTable();
+
+renderMutasi();
+
+renderTransaksi();
+
+updateAllRekap();
+
+/* =========================
+DRAFT / RESET / FINALISASI
+========================= */
+
+function kumpulkanDataLaporan(){
+
+  return {
+    cashPagi: localStorage.getItem('cashPagi') || '',
+    saldoData: localStorage.getItem('saldoData') || '[]',
+    transaksiData: localStorage.getItem('transaksiData') || '[]',
+    mutasiData: localStorage.getItem('mutasiData') || '[]',
+    feeFormula: localStorage.getItem('feeFormula') || '',
+    feeTotal: localStorage.getItem('feeTotal') || '0',
+    savedAt: new Date().toISOString()
+  };
+
+}
+
+window.simpanDraft = function(){
+
+  localStorage.setItem(
+    'laporanDraft',
+    JSON.stringify(kumpulkanDataLaporan())
+  );
+
+  alert('Draft laporan berhasil disimpan.');
+
+};
+
+window.resetLaporan = function(){
+
+  if(
+    !confirm(
+      'Reset semua input laporan hari ini? Transaksi, mutasi, kas pagi, dan saldo akan dikosongkan.'
+    )
+  ){
+    return;
+  }
+
+  [
+    'cashPagi',
+    'saldoData',
+    'transaksiData',
+    'mutasiData',
+    'feeFormula',
+    'feeTotal',
+    'laporanDraft'
+  ].forEach(key => localStorage.removeItem(key));
+
+  location.reload();
+
+};
+
+window.finalisasiLaporan = function(){
+
+  const data = kumpulkanDataLaporan();
+
+  data.status = 'final';
+
+  const tanggal =
+  new Date().toISOString().slice(0, 10);
+
+  localStorage.setItem(
+    'laporanFinal_' + tanggal,
+    JSON.stringify(data)
+  );
+
+  localStorage.setItem(
+    'laporanDraft',
+    JSON.stringify(data)
+  );
+
+  alert(
+    'Laporan tanggal ' +
+    tanggal +
+    ' berhasil difinalisasi.'
+  );
+
+};
+
+window.addEventListener("beforeunload", () => {
+
+try{
+
+localStorage.setItem(
+"laporanDraft",
+JSON.stringify(kumpulkanDataLaporan())
+);
+
+}catch(e){
+
+console.error(e);
+
+}
+
+});
+
+document.addEventListener("visibilitychange", () => {
+
+if(document.visibilityState !== "hidden") return;
+
+try{
+
+localStorage.setItem(
+"laporanDraft",
+JSON.stringify(kumpulkanDataLaporan())
+);
+
+}catch(e){
+
+console.error(e);
+
+}
+
+});
+  
+</script>
+
+</body>
+</html>

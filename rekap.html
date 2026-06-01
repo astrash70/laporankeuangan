@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekap Bulanan - Digital Report</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f5f7f9;
+color:#1c1c1c;
+}
+
+.dashboard-layout{
+display:flex;
+min-height:100vh;
+}
+
+.sidebar{
+width:260px;
+background:linear-gradient(180deg,#052e1b,#06351f,#041f14);
+padding:24px 16px;
+position:fixed;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:14px;
+color:white;
+font-size:16px;
+font-weight:700;
+margin-bottom:40px;
+}
+
+.logo-icon{
+width:44px;
+height:44px;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(255,255,255,.08);
+color:#8dff9d;
+font-size:22px;
+}
+
+.sidebar-menu{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.sidebar-item{
+padding:15px 18px;
+border-radius:16px;
+color:white;
+text-decoration:none;
+display:flex;
+gap:12px;
+align-items:center;
+}
+
+.sidebar-item.active{
+background:#15803d;
+}
+
+.sidebar-title{
+color:#7aa08a;
+font-size:12px;
+margin:20px 12px 10px;
+}
+
+.sidebar-profile{
+background:rgba(255,255,255,.08);
+padding:16px;
+border-radius:18px;
+color:white;
+}
+
+.profile-top{
+display:flex;
+gap:12px;
+align-items:center;
+}
+
+.profile-avatar{
+width:46px;
+height:46px;
+border-radius:50%;
+background:#1ec45d;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+}
+
+.main-content{
+margin-left:260px;
+flex:1;
+padding:24px;
+}
+
+.topbar{
+background:white;
+padding:20px 24px;
+border-radius:20px;
+margin-bottom:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.topbar h1{
+font-size:26px;
+margin-bottom:6px;
+}
+
+.topbar p{
+color:#667085;
+font-size:14px;
+}
+
+.date-box{
+background:#f4f6f8;
+padding:10px 16px;
+border-radius:12px;
+font-size:14px;
+}
+
+.main-card{
+background:white;
+border-radius:24px;
+padding:24px;
+margin-bottom:20px;
+}
+
+.main-card h2{
+font-size:18px;
+margin-bottom:16px;
+}
+
+.empty-msg{
+text-align:center;
+padding:48px 20px;
+color:#94a3b8;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#f4f8f5;
+padding:14px 16px;
+text-align:left;
+font-size:13px;
+}
+
+td{
+padding:14px 16px;
+border-top:1px solid #edf1f3;
+font-size:14px;
+}
+
+.badge{
+display:inline-block;
+padding:4px 10px;
+border-radius:999px;
+font-size:12px;
+font-weight:600;
+background:#e8f6ec;
+color:#15803d;
+}
+
+.summary-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:16px;
+margin-bottom:20px;
+}
+
+.summary-card{
+border:1px solid #edf1f3;
+border-radius:18px;
+padding:20px;
+}
+
+.summary-card h3{
+font-size:13px;
+color:#667085;
+margin-bottom:8px;
+}
+
+.summary-card strong{
+font-size:24px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+<div class="sidebar">
+
+<div>
+
+<div class="logo">
+<div class="logo-icon">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+<span>Digital Report</span>
+</div>
+
+<div class="sidebar-menu">
+
+<a href="dashboard.html" class="sidebar-item">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</a>
+
+<a href="input.html" class="sidebar-item">
+<i class="fa-solid fa-circle-plus"></i>
+Input Laporan
+</a>
+
+<a href="database.html" class="sidebar-item">
+<i class="fa-solid fa-database"></i>
+Database
+</a>
+
+<a href="report.html" class="sidebar-item">
+<i class="fa-regular fa-clipboard"></i>
+Report
+</a>
+
+<a href="rekap.html" class="sidebar-item active">
+<i class="fa-regular fa-calendar"></i>
+Rekap Bulanan
+</a>
+
+<div class="sidebar-title">MASTER DATA</div>
+
+<a href="database.html" class="sidebar-item">
+<i class="fa-solid fa-right-left"></i>
+Jenis Transaksi
+</a>
+
+<a href="Sumber Saldo.html" class="sidebar-item">
+<i class="fa-solid fa-building-columns"></i>
+Sumber Saldo
+</a>
+
+<a href="datarange.html" class="sidebar-item">
+<i class="fa-solid fa-layer-group"></i>
+Data Range
+</a>
+
+</div>
+
+</div>
+
+<div class="sidebar-profile">
+<div class="profile-top">
+<div class="profile-avatar">T</div>
+<div>
+<h4>Tokosayyida</h4>
+<p style="opacity:.7;font-size:13px;">Admin</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="main-content">
+
+<div class="topbar">
+<div>
+<h1>Rekap Bulanan</h1>
+<p>Ringkasan laporan harian yang sudah difinalisasi dari Input Laporan</p>
+</div>
+<div class="date-box" id="tanggal"></div>
+</div>
+
+<div class="summary-grid">
+<div class="summary-card">
+<h3>TOTAL LAPORAN FINAL</h3>
+<strong id="totalFinal">0</strong>
+</div>
+<div class="summary-card">
+<h3>TOTAL TRANSAKSI (SEMUA FINAL)</h3>
+<strong id="totalTransaksi">0</strong>
+</div>
+<div class="summary-card">
+<h3>DRAFT TERSIMPAN</h3>
+<strong id="draftStatus">Tidak ada</strong>
+</div>
+</div>
+
+<div class="main-card">
+<h2>Daftar Laporan Difinalisasi</h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Tanggal</th>
+<th>Jumlah Transaksi</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="rekapTable"></tbody>
+</table>
+</div>
+<p id="emptyMsg" class="empty-msg" style="display:none;">
+Belum ada laporan difinalisasi. Buka <a href="input.html">Input Laporan</a> lalu klik &quot;Simpan &amp; Finalisasi Laporan&quot;.
+</p>
+</div>
+
+</div>
+
+</div>
+
+<script type="module" src="js/rekap-firestore.js"></script>
+
+<script>
+
+document.getElementById('tanggal').innerText =
+new Date().toLocaleDateString('id-ID',{
+day:'numeric',
+month:'long',
+year:'numeric'
+});
+
+</script>
+
+</body>
+</html>

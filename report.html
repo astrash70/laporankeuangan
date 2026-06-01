@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Report</title>
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:#f5f7f9;
+  color:#101828;
+}
+
+.dashboard-layout{
+  display:flex;
+  min-height:100vh;
+}
+
+/* ======================
+SIDEBAR
+====================== */
+
+.sidebar{
+
+  width:260px;
+
+  background:
+  linear-gradient(
+    180deg,
+    #052e1b,
+    #06351f,
+    #041f14
+  );
+
+  padding:24px 16px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
+
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  height:100vh;
+
+  overflow:hidden;
+}
+
+.sidebar::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+  radial-gradient(
+    circle at top right,
+    rgba(32,201,111,0.16),
+    transparent 45%
+  );
+
+  pointer-events:none;
+}
+
+.logo{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  color:white;
+
+  margin-bottom:40px;
+
+  position:relative;
+
+  z-index:2;
+}
+
+.logo span{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.logo-icon{
+
+  width:44px;
+  height:44px;
+
+  border-radius:14px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:
+  rgba(255,255,255,0.08);
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+}
+
+.logo-icon i{
+
+  font-size:22px;
+
+  color:#8dff9d;
+}
+
+.sidebar-menu{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+
+  position:relative;
+
+  z-index:2;
+}
+
+.sidebar-title{
+
+  color:rgba(255,255,255,0.45);
+
+  font-size:12px;
+
+  font-weight:600;
+
+  margin:
+  22px 14px 8px;
+}
+
+.sidebar-item{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  padding:16px 18px;
+
+  border-radius:18px;
+
+  color:rgba(255,255,255,0.82);
+
+  text-decoration:none;
+
+  font-size:15px;
+
+  font-weight:500;
+
+  transition:.25s;
+}
+
+.sidebar-item i{
+
+  width:20px;
+
+  text-align:center;
+}
+
+.sidebar-item:hover{
+
+  background:
+  rgba(255,255,255,0.08);
+
+  color:white;
+}
+
+.sidebar-item.active{
+
+  background:
+  linear-gradient(
+    135deg,
+    #0a6b2d,
+    #11853c
+  );
+
+  color:white;
+
+  box-shadow:
+  0 10px 25px rgba(0,0,0,0.15);
+}
+
+.sidebar-profile{
+
+  position:relative;
+
+  z-index:2;
+
+  background:
+  rgba(255,255,255,0.06);
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+
+  border-radius:22px;
+
+  padding:16px;
+
+  color:white;
+}
+
+.profile-top{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+}
+
+.profile-avatar{
+
+  width:46px;
+  height:46px;
+
+  border-radius:50%;
+
+  background:#1ec45d;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-weight:700;
+}
+
+/* ======================
+MAIN
+====================== */
+
+.main-content{
+
+  flex:1;
+
+  margin-left:260px;
+
+  padding:24px;
+}
+
+/* ======================
+TOPBAR
+====================== */
+
+.topbar{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  margin-bottom:26px;
+}
+
+.topbar h1{
+
+  font-size:42px;
+
+  font-weight:800;
+
+  margin-bottom:8px;
+}
+
+.topbar p{
+
+  color:#667085;
+
+  font-size:15px;
+}
+
+.topbar-right{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:16px;
+}
+
+.date-box{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:16px;
+
+  padding:14px 18px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  font-weight:600;
+}
+
+.user-box{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:16px;
+
+  padding:10px 14px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+}
+
+/* ======================
+FILTER
+====================== */
+
+.filter-bar{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:24px;
+
+  padding:20px;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(6,1fr);
+
+  gap:14px;
+
+  margin-bottom:18px;
+}
+
+.filter-item{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+}
+
+.filter-item label{
+
+  font-size:13px;
+
+  color:#667085;
+}
+
+.filter-item select{
+
+  height:50px;
+
+  border:
+  1px solid #e4e7ec;
+
+  border-radius:14px;
+
+  padding:0 14px;
+
+  font-size:15px;
+
+  outline:none;
+
+  background:white;
+}
+
+.filter-btn{
+
+  height:50px;
+
+  border:none;
+
+  border-radius:14px;
+
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.btn-light{
+
+  background:white;
+
+  border:
+  1px solid #dfe4e7;
+}
+
+.btn-green{
+
+  background:
+  linear-gradient(
+    135deg,
+    #0a6b2d,
+    #11853c
+  );
+
+  color:white;
+}
+
+/* ======================
+STATS
+====================== */
+
+.stats-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(5,1fr);
+
+  gap:16px;
+
+  margin-bottom:18px;
+}
+
+.stat-card{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:22px;
+
+  padding:22px;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+}
+
+.stat-card h5{
+
+  font-size:14px;
+
+  margin-bottom:14px;
+}
+
+.stat-card h2{
+
+  font-size:24px;
+
+  font-weight:800;
+
+  margin-bottom:10px;
+}
+
+.stat-change{
+
+  font-size:14px;
+
+  font-weight:700;
+
+  margin-bottom:8px;
+}
+
+.green{
+  color:#16a34a;
+}
+
+.red{
+  color:#dc2626;
+}
+
+.gray{
+  color:#667085;
+}
+
+.stat-icon{
+
+  width:50px;
+  height:50px;
+
+  border-radius:50%;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:22px;
+}
+
+/* ======================
+CONTENT GRID
+====================== */
+
+.content-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  2fr .9fr;
+
+  gap:18px;
+
+  margin-bottom:18px;
+}
+
+.card{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:24px;
+
+  padding:22px;
+}
+
+/* ======================
+CHART
+====================== */
+
+.chart-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:20px;
+}
+
+.chart-tabs{
+
+  display:flex;
+
+  gap:10px;
+}
+
+.chart-tab{
+
+  padding:10px 18px;
+
+  border-radius:12px;
+
+  border:
+  1px solid #dfe5e8;
+
+  background:white;
+
+  font-weight:600;
+
+  cursor:pointer;
+}
+
+.chart-tab.active{
+
+  background:#e9f7ee;
+
+  color:#15803d;
+
+  border-color:#b7dfc0;
+}
+
+.chart-area{
+
+  height:320px;
+
+  position:relative;
+}
+
+.chart-svg{
+
+  width:100%;
+  height:100%;
+}
+
+/* ======================
+SUMMARY
+====================== */
+
+.summary-list{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:18px;
+}
+
+.summary-row{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  font-size:15px;
+}
+
+.divider{
+
+  border-top:
+  1px dashed #dfe5e8;
+}
+
+/* ======================
+TABLE GRID
+====================== */
+
+.table-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  1fr 1fr 1fr;
+
+  gap:18px;
+}
+
+.table-card{
+
+  background:white;
+
+  border:
+  1px solid #edf1f3;
+
+  border-radius:24px;
+
+  padding:18px;
+}
+
+.table-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:16px;
+}
+
+.table-header h3{
+
+  font-size:16px;
+}
+
+.table-header button{
+
+  border:none;
+
+  background:#f4f6f8;
+
+  border-radius:10px;
+
+  padding:10px 14px;
+
+  font-weight:600;
+
+  cursor:pointer;
+}
+
+table{
+
+  width:100%;
+
+  border-collapse:collapse;
+}
+
+thead{
+
+  background:#f8fafb;
+}
+
+th{
+
+  padding:14px;
+
+  text-align:left;
+
+  font-size:13px;
+}
+
+td{
+
+  padding:14px;
+
+  border-top:
+  1px solid #edf1f3;
+
+  font-size:14px;
+}
+
+.progress{
+
+  width:62px;
+  height:8px;
+
+  border-radius:99px;
+
+  background:#eef2f3;
+
+  overflow:hidden;
+}
+
+.progress span{
+
+  display:block;
+
+  height:100%;
+
+  background:#16a34a;
+
+  border-radius:99px;
+}
+
+.update-bar{
+
+  margin-top:18px;
+
+  background:#f5f9ff;
+
+  border:
+  1px solid #d9e6ff;
+
+  border-radius:16px;
+
+  padding:16px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  color:#2957a4;
+}
+
+/* ======================
+MOBILE
+====================== */
+
+@media(max-width:1400px){
+
+  .stats-grid{
+    grid-template-columns:
+    repeat(2,1fr);
+  }
+
+  .table-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:1200px){
+
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+
+  .filter-bar{
+    grid-template-columns:
+    repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:768px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .main-content{
+    margin-left:0;
+    padding:16px;
+  }
+
+  .topbar{
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .filter-bar{
+    grid-template-columns:1fr;
+  }
+
+  .topbar h1{
+    font-size:30px;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div>
+
+<div class="logo">
+
+<div class="logo-icon">
+<i class="fa-solid fa-database"></i>
+</div>
+
+<span>Digital Report</span>
+
+</div>
+
+<div class="sidebar-menu">
+
+<a href="dashboard.html"
+class="sidebar-item">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</a>
+
+<a href="input.html"
+class="sidebar-item">
+<i class="fa-solid fa-pen-to-square"></i>
+Input Laporan
+</a>
+
+<a href="database.html"
+class="sidebar-item">
+<i class="fa-solid fa-database"></i>
+Database
+</a>
+
+<a href="report.html"
+class="sidebar-item active">
+<i class="fa-regular fa-clipboard"></i>
+Report
+</a>
+
+<a href="rekap.html"
+class="sidebar-item">
+<i class="fa-regular fa-calendar"></i>
+Rekap Bulanan
+</a>
+
+<div class="sidebar-title">
+MASTER DATA
+</div>
+
+<a href="database.html"
+class="sidebar-item">
+<i class="fa-solid fa-arrows-left-right"></i>
+Jenis Transaksi
+</a>
+
+<a href="database.html"
+class="sidebar-item">
+<i class="fa-solid fa-shapes"></i>
+Kategori
+</a>
+
+<a href="database.html"
+class="sidebar-item">
+<i class="fa-solid fa-filter-circle-dollar"></i>
+Efek Kategori
+</a>
+
+<a href="Sumber Saldo.html"
+class="sidebar-item">
+<i class="fa-solid fa-building-columns"></i>
+Akun Bank / ATM
+</a>
+
+<a href="datarange.html"
+class="sidebar-item">
+<i class="fa-solid fa-layer-group"></i>
+Data Range
+</a>
+
+</div>
+
+</div>
+
+<div class="sidebar-profile">
+
+<div class="profile-top">
+
+<div class="profile-avatar">
+T
+</div>
+
+<div>
+
+<h4>Tokosayyida</h4>
+
+<p style="opacity:.7;font-size:13px;">
+Admin
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main-content">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div>
+
+<h1>
+Laporan & Analisis
+</h1>
+
+<p>
+Pantau performa dan kondisi keuangan berdasarkan data transaksi
+</p>
+
+</div>
+
+<div class="topbar-right">
+
+<div class="date-box">
+<i class="fa-regular fa-calendar"></i>
+1 Jan 2026 - 22 Mei 2026
+<i class="fa-solid fa-chevron-down"></i>
+</div>
+
+<div class="user-box">
+
+<div class="profile-avatar"
+style="width:42px;height:42px;">
+T
+</div>
+
+<div>
+
+<div style="font-weight:700;">
+Tokosayyida
+</div>
+
+<div style="font-size:13px;color:#667085;">
+Admin
+</div>
+
+</div>
+
+<i class="fa-solid fa-chevron-down"
+style="margin-left:10px;"></i>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FILTER -->
+
+<div class="filter-bar">
+
+<div class="filter-item">
+
+<label>
+Tahun
+</label>
+
+<select>
+<option>2026</option>
+</select>
+
+</div>
+
+<div class="filter-item">
+
+<label>
+Bulan
+</label>
+
+<select>
+<option>Semua Bulan</option>
+</select>
+
+</div>
+
+<div class="filter-item">
+
+<label>
+Jenis Transaksi
+</label>
+
+<select>
+<option>Semua</option>
+</select>
+
+</div>
+
+<div class="filter-item">
+
+<label>
+Akun / Sumber
+</label>
+
+<select>
+<option>Semua</option>
+</select>
+
+</div>
+
+<button class="filter-btn btn-light"
+style="margin-top:22px;">
+<i class="fa-solid fa-rotate-left"></i>
+&nbsp;
+Reset Filter
+</button>
+
+<button class="filter-btn btn-green"
+style="margin-top:22px;">
+<i class="fa-solid fa-download"></i>
+&nbsp;
+Export
+</button>
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<div>
+
+<h5>
+TOTAL TRANSAKSI
+</h5>
+
+<h2>
+16.842
+</h2>
+
+<div class="stat-change green">
+▲ 9,52%
+</div>
+
+<div class="gray">
+vs Periode Sebelumnya
+</div>
+
+</div>
+
+<div class="stat-icon"
+style="background:#e8f6ec;color:#16a34a;">
+<i class="fa-solid fa-receipt"></i>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div>
+
+<h5>
+TOTAL ADMIN (LUAR + DALAM)
+</h5>
+
+<h2>
+Rp 369.000
+</h2>
+
+<div class="stat-change green">
+▲ 6,18%
+</div>
+
+<div class="gray">
+vs Periode Sebelumnya
+</div>
+
+</div>
+
+<div class="stat-icon"
+style="background:#eaf7ef;color:#16a34a;">
+<i class="fa-solid fa-coins"></i>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div>
+
+<h5>
+TOTAL ADMIN BANK
+</h5>
+
+<h2>
+Rp 83.000
+</h2>
+
+<div class="stat-change red">
+▼ -2,35%
+</div>
+
+<div class="gray">
+vs Periode Sebelumnya
+</div>
+
+</div>
+
+<div class="stat-icon"
+style="background:#edf5ff;color:#0b63ce;">
+<i class="fa-solid fa-building-columns"></i>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div>
+
+<h5>
+TOTAL FEE
+</h5>
+
+<h2>
+Rp 60.650
+</h2>
+
+<div class="stat-change green">
+▲ 4,91%
+</div>
+
+<div class="gray">
+vs Periode Sebelumnya
+</div>
+
+</div>
+
+<div class="stat-icon"
+style="background:#f7ecff;color:#9333ea;">
+<i class="fa-solid fa-percent"></i>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div>
+
+<h5>
+TOTAL REVENUE (NET)
+</h5>
+
+<h2>
+Rp 309.000
+</h2>
+
+<div class="stat-change green">
+▲ 7,84%
+</div>
+
+<div class="gray">
+vs Periode Sebelumnya
+</div>
+
+</div>
+
+<div class="stat-icon"
+style="background:#edf8f0;color:#16a34a;">
+<i class="fa-solid fa-arrow-trend-up"></i>
+</div>
+
+</div>
+
+</div>
+
+<!-- CHART + SUMMARY -->
+
+<div class="content-grid">
+
+<!-- CHART -->
+
+<div class="card">
+
+<div class="chart-header">
+
+<h3>
+Trend Transaksi & Revenue
+</h3>
+
+<div class="chart-tabs">
+
+<button class="chart-tab active">
+Per Bulan
+</button>
+
+<button class="chart-tab">
+Per Hari
+</button>
+
+</div>
+
+</div>
+
+<div class="chart-area">
+
+<svg class="chart-svg"
+viewBox="0 0 900 320">
+
+<!-- GRID -->
+
+<line x1="50" y1="40" x2="850" y2="40"
+stroke="#e7ecef"/>
+
+<line x1="50" y1="90" x2="850" y2="90"
+stroke="#e7ecef"/>
+
+<line x1="50" y1="140" x2="850" y2="140"
+stroke="#e7ecef"/>
+
+<line x1="50" y1="190" x2="850" y2="190"
+stroke="#e7ecef"/>
+
+<line x1="50" y1="240" x2="850" y2="240"
+stroke="#e7ecef"/>
+
+<!-- GREEN -->
+
+<polyline
+fill="none"
+stroke="#16a34a"
+stroke-width="3"
+points="
+50,110
+120,125
+190,60
+260,170
+330,125
+400,185
+470,125
+540,115
+610,145
+680,120
+750,50
+820,120
+"/>
+
+<!-- BLUE -->
+
+<polyline
+fill="none"
+stroke="#1e3a8a"
+stroke-width="3"
+points="
+50,140
+120,155
+190,90
+260,200
+330,155
+400,220
+470,170
+540,150
+610,180
+680,150
+750,100
+820,155
+"/>
+
+</svg>
+
+</div>
+
+</div>
+
+<!-- SUMMARY -->
+
+<div class="card">
+
+<h3 style="margin-bottom:22px;">
+Ringkasan Keuangan
+</h3>
+
+<div class="summary-list">
+
+<div class="summary-row">
+<span>Cash Masuk</span>
+<strong class="green">Rp 88.641.130</strong>
+</div>
+
+<div class="summary-row">
+<span>Cash Keluar</span>
+<strong class="red">Rp 30.393.621</strong>
+</div>
+
+<div class="summary-row">
+<span>Cash Akhir</span>
+<strong>Rp 58.247.509</strong>
+</div>
+
+<div class="divider"></div>
+
+<div class="summary-row">
+<span>Saldo Masuk</span>
+<strong class="green">Rp 60.004.600</strong>
+</div>
+
+<div class="summary-row">
+<span>Saldo Keluar</span>
+<strong class="red">Rp 29.610.979</strong>
+</div>
+
+<div class="summary-row">
+<span>Saldo Akhir</span>
+<strong>Rp 30.393.621</strong>
+</div>
+
+<div class="divider"></div>
+
+<div style="
+background:#f8faf8;
+border:1px solid #e7ecef;
+border-radius:18px;
+padding:16px;
+margin-top:10px;
+">
+
+<h4 style="margin-bottom:14px;">
+Cek Keseimbangan
+</h4>
+
+<div class="summary-row"
+style="margin-bottom:12px;">
+
+<div style="
+display:flex;
+align-items:center;
+gap:10px;
+">
+
+<i class="fa-regular fa-circle-check"
+style="color:#16a34a;"></i>
+
+<span>Cash Balance</span>
+
+</div>
+
+<div style="
+background:#e8f6ec;
+color:#15803d;
+padding:8px 14px;
+border-radius:12px;
+font-size:13px;
+font-weight:700;
+">
+BALANCE
+</div>
+
+</div>
+
+<div class="summary-row">
+
+<div style="
+display:flex;
+align-items:center;
+gap:10px;
+">
+
+<i class="fa-regular fa-circle-check"
+style="color:#16a34a;"></i>
+
+<span>Saldo Balance</span>
+
+</div>
+
+<div style="
+background:#e8f6ec;
+color:#15803d;
+padding:8px 14px;
+border-radius:12px;
+font-size:13px;
+font-weight:700;
+">
+BALANCE
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- TABLES -->
+
+<div class="table-grid">
+
+<!-- TABLE 1 -->
+
+<div class="table-card">
+
+<div class="table-header">
+
+<h3>
+Top 5 Jenis Transaksi
+</h3>
+
+<button>
+Lihat Semua
+</button>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Jenis Transaksi</th>
+<th>Jumlah</th>
+<th>Persentase</th>
+<th>Total Admin</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Tarik Tunai</td>
+<td>
+<div class="progress">
+<span style="width:82%"></span>
+</div>
+</td>
+<td>50,19%</td>
+<td>Rp 204.000</td>
+</tr>
+
+<tr>
+<td>Transfer BRI</td>
+<td>
+<div class="progress">
+<span style="width:45%"></span>
+</div>
+</td>
+<td>18,54%</td>
+<td>Rp 76.000</td>
+</tr>
+
+<tr>
+<td>PLN</td>
+<td>
+<div class="progress">
+<span style="width:32%"></span>
+</div>
+</td>
+<td>10,93%</td>
+<td>Rp 36.000</td>
+</tr>
+
+<tr>
+<td>Dana</td>
+<td>
+<div class="progress">
+<span style="width:24%"></span>
+</div>
+</td>
+<td>7,31%</td>
+<td>Rp 28.000</td>
+</tr>
+
+<tr>
+<td>Lainnya</td>
+<td>
+<div class="progress">
+<span style="width:10%"></span>
+</div>
+</td>
+<td>1,14%</td>
+<td>Rp 25.000</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- TABLE 2 -->
+
+<div class="table-card">
+
+<div class="table-header">
+
+<h3>
+Top 5 Customer
+</h3>
+
+<button>
+Lihat Semua
+</button>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Customer</th>
+<th>Jumlah Transaksi</th>
+<th>Total Transaksi</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Budi Santoso</td>
+<td>312</td>
+<td>Rp 24.350.000</td>
+</tr>
+
+<tr>
+<td>Siti Aminah</td>
+<td>278</td>
+<td>Rp 18.750.000</td>
+</tr>
+
+<tr>
+<td>Andi Pratama</td>
+<td>228</td>
+<td>Rp 16.420.000</td>
+</tr>
+
+<tr>
+<td>Rina Marlina</td>
+<td>201</td>
+<td>Rp 14.900.000</td>
+</tr>
+
+<tr>
+<td>Joko Widodo</td>
+<td>187</td>
+<td>Rp 13.230.000</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- TABLE 3 -->
+
+<div class="table-card">
+
+<div class="table-header">
+
+<h3>
+Perbandingan Tahun
+</h3>
+
+<button>
+2025 vs 2026
+</button>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Metrik</th>
+<th>2025</th>
+<th>2026</th>
+<th>Perubahan</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Total Transaksi</td>
+<td>15.376</td>
+<td>16.842</td>
+<td class="green">▲ 9,52%</td>
+</tr>
+
+<tr>
+<td>Total Admin</td>
+<td>Rp 328.600</td>
+<td>Rp 369.000</td>
+<td class="green">▲ 12,30%</td>
+</tr>
+
+<tr>
+<td>Total Admin Bank</td>
+<td>Rp 84.900</td>
+<td>Rp 83.000</td>
+<td class="red">▼ -2,23%</td>
+</tr>
+
+<tr>
+<td>Total Fee</td>
+<td>Rp 57.800</td>
+<td>Rp 60.650</td>
+<td class="green">▲ 4,93%</td>
+</tr>
+
+<tr>
+<td>Total Revenue (Net)</td>
+<td>Rp 271.900</td>
+<td>Rp 309.000</td>
+<td class="green">▲ 13,65%</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- UPDATE -->
+
+<div class="update-bar">
+
+<i class="fa-solid fa-circle-info"></i>
+
+<div>
+Data diperbarui per 22 Mei 2026, 10:30 WIB
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
