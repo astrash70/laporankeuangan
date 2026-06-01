@@ -1849,7 +1849,7 @@ Ringkasan otomatis berdasarkan input di samping
 <div>
 
 <div style="font-size:14px;">
-TOTAL PERPUTARAN
+TOTAL ASET
 </div>
 
 <h2 id="totalPerputaran">
@@ -1857,7 +1857,7 @@ Rp 0
 </h2>
 
 <div style="margin-top:8px;font-size:14px;color:#667085;">
-Cash + Saldo Akhir
+Cash Akhir + Total Saldo Akhir
 </div>
 
 </div>
@@ -2359,10 +2359,84 @@ k.toLowerCase() === nama.toLowerCase()
 
 );
 
-if(found) return found;
+return found || null;
 
-map[nama] = 0;
-return nama;
+}
+
+/**
+ * Terapkan efek transaksi ke cash dan saldo per sumber dana (aturan agen BRILINK).
+ * Cash dan saldo dipisah; saldo hanya berubah pada sumberDana yang dipilih.
+ */
+function terapkanEfekTransaksi(
+saldoAkhir,
+meta,
+nominal,
+admin,
+adminBank
+){
+
+const key =
+resolveSaldoKey(
+saldoAkhir,
+meta.sumber
+);
+
+const saldoIn =
+isSaldoIn(meta.arah);
+
+const saldoOut =
+isSaldoOut(meta.arah);
+
+const cashIn =
+isCashIn(meta.cash);
+
+const cashOut =
+isCashOut(meta.cash);
+
+let deltaCash = 0;
+let deltaSaldo = 0;
+
+if(cashIn && saldoOut){
+
+deltaCash = nominal + admin;
+
+if(key){
+deltaSaldo = -(nominal + adminBank);
+}
+
+}else if(cashOut && saldoIn){
+
+deltaCash = -nominal;
+
+if(key){
+deltaSaldo = nominal - adminBank;
+}
+
+}else{
+
+if(cashIn){
+deltaCash += nominal + admin;
+}
+
+if(cashOut){
+deltaCash -= nominal;
+}
+
+if(key){
+
+if(saldoIn){
+deltaSaldo += nominal - adminBank;
+}
+
+if(saldoOut){
+deltaSaldo -= nominal + adminBank;
+}
+
+}
+
+}
+
+return { deltaCash, deltaSaldo, key };
 
 }
 
@@ -2395,46 +2469,7 @@ cashPagiInput?.value || "0"
 let totalAdmin = 0;
 let totalAdminBank = 0;
 
-const applySaldo = (meta, nominal) => {
-
-const key =
-resolveSaldoKey(
-saldoAkhir,
-meta.sumber
-);
-
-if(!key) return;
-
-if(isSaldoIn(meta.arah)){
-
-saldoAkhir[key] += nominal;
-
-}else if(isSaldoOut(meta.arah)){
-
-saldoAkhir[key] -= nominal;
-
-}
-
-};
-
-const applyCash = (meta, nominal, admin, adminBank) => {
-
-if(isCashIn(meta.cash)){
-
-cashAkhir += nominal;
-
-}else if(isCashOut(meta.cash)){
-
-cashAkhir -= nominal;
-
-}
-
-cashAkhir += admin;
-cashAkhir -= adminBank;
-
-};
-
-transaksiData.forEach(item => {
+const prosesBaris = (item, hitungAdminNasabah) => {
 
 const nominal =
 parseRupiah(item.nominal || "0");
@@ -2448,31 +2483,36 @@ parseRupiah(item.adminBank || "0");
 const meta =
 getTransaksiMeta(item);
 
-applySaldo(meta, nominal);
-applyCash(meta, nominal, admin, adminBank);
+const efek =
+terapkanEfekTransaksi(
+saldoAkhir,
+meta,
+nominal,
+admin,
+adminBank
+);
 
+cashAkhir += efek.deltaCash;
+
+if(efek.key !== null){
+saldoAkhir[efek.key] += efek.deltaSaldo;
+}
+
+if(hitungAdminNasabah){
 totalAdmin += admin;
-totalAdminBank += adminBank;
-
-});
-
-(mutasiData || []).forEach(item => {
-
-const nominal =
-parseRupiah(item.nominal || "0");
-
-const adminBank =
-parseRupiah(item.adminBank || "0");
-
-const meta =
-getTransaksiMeta(item);
-
-applySaldo(meta, nominal);
-applyCash(meta, nominal, 0, adminBank);
+}
 
 totalAdminBank += adminBank;
 
-});
+};
+
+transaksiData.forEach(item =>
+prosesBaris(item, true)
+);
+
+(mutasiData || []).forEach(item =>
+prosesBaris(item, false)
+);
 
 const fee =
 Number(
@@ -2496,7 +2536,7 @@ hitungTotalSaldoAwal();
 const modalAwal =
 cashPagi + totalSaldoAwal;
 
-const modalAkhir =
+const totalAset =
 cashAkhir + totalSaldoAkhir;
 
 const expectedAkhir =
@@ -2511,7 +2551,8 @@ totalAdminBank,
 cashPagi,
 totalSaldoAwal,
 modalAwal,
-modalAkhir,
+modalAkhir: totalAset,
+totalAset,
 expectedAkhir
 };
 
