@@ -4231,28 +4231,96 @@ FEE MANUAL
 const feeInput =
 document.getElementById('feeInput');
 
-const feeTersimpan =
+let feeFormula =
+localStorage.getItem(
+'feeFormula'
+) || '=0';
+
+let feeTotal =
 Number(
-localStorage.getItem('feeTotal')
+localStorage.getItem(
+'feeTotal'
+)
 ) || 0;
 
 feeInput.value =
-formatRupiah(feeTersimpan);
+formatRupiah(feeTotal);
+
+function simpanFee(){
+
+  const rumus =
+  feeInput.value.trim();
+
+  try{
+
+    let hasil = 0;
+
+    if(rumus.startsWith('=')){
+
+      hasil = Function(
+        'return ' +
+        rumus.substring(1)
+      )();
+
+    }else{
+
+      hasil =
+      parseRupiah(rumus);
+
+    }
+
+    feeFormula = rumus;
+    feeTotal = hasil;
+
+    localStorage.setItem(
+      'feeFormula',
+      feeFormula
+    );
+
+    localStorage.setItem(
+      'feeTotal',
+      feeTotal
+    );
+
+    feeInput.value =
+    formatRupiah(feeTotal);
+
+    updateAllRekap();
+
+  }catch(e){
+
+    alert(
+      'Rumus Fee tidak valid'
+    );
+
+  }
+
+}
 
 feeInput.addEventListener(
-'blur',
+'keydown',
+function(e){
+
+  if(e.key === 'Enter'){
+
+    e.preventDefault();
+
+    simpanFee();
+
+  }
+
+});
+
+feeInput.addEventListener(
+'dblclick',
 function(){
 
-  const nilai =
-  parseRupiah(this.value);
-
   this.value =
-  formatRupiah(nilai);
+  feeFormula;
 
-  localStorage.setItem(
-    'feeTotal',
-    nilai
-  );
+  this.select();
+
+});
 
   updateAllRekap();
 
