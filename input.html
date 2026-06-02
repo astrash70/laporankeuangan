@@ -905,14 +905,9 @@ BOTTOM BUTTON
 ========================= */
 
 .bottom-actions{
-
   display:grid;
-
-  grid-template-columns:
-  1fr 1fr 1.5fr;
-
+  grid-template-columns: 1fr 2fr;
   gap:14px;
-
   margin-top:18px;
 }
 
@@ -1852,12 +1847,6 @@ Belum ada mutasi
 <!-- BUTTON -->
 
 <div class="bottom-actions">
-
-<button type="button" class="bottom-btn btn-light" onclick="simpanDraft()">
-<i class="fa-regular fa-floppy-disk"></i>
-&nbsp;
-Simpan Draft
-</button>
 
 <button type="button" class="bottom-btn btn-light" onclick="resetLaporan()">
 <i class="fa-solid fa-rotate-left"></i>
@@ -4427,16 +4416,6 @@ function kumpulkanDataLaporan(){
 
 }
 
-window.simpanDraft = function(){
-
-  localStorage.setItem(
-    'laporanDraft',
-    JSON.stringify(kumpulkanDataLaporan())
-  );
-
-  alert('Draft laporan berhasil disimpan.');
-
-};
 
 window.resetLaporan = function(){
 
