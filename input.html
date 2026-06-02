@@ -3592,6 +3592,26 @@ Hapus
 
   });
 
+  const kosong = Math.max(0, 10 - filteredData.length);
+
+for(let i = 0; i < kosong; i++){
+
+  table.innerHTML += `
+  <tr class="empty-row">
+    <td>&nbsp;</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  `;
+
+}
+
   if(table.innerHTML === ''){
 
     table.innerHTML = `
