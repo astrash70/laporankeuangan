@@ -828,6 +828,38 @@ RIGHT PANEL
   1px solid #edf1f3;
 }
 
+  .summary-total-box{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+
+}
+
+.summary-total-title{
+
+  color:#15803d;
+
+  font-weight:800;
+
+  font-size:18px;
+
+}
+
+.summary-total-value{
+
+  color:#15803d;
+
+  font-weight:800;
+
+  font-size:26px;
+
+  text-align:right;
+
+}
+
 .balance-total{
 
   display:flex;
@@ -1929,13 +1961,19 @@ border-radius:8px;
 
 <div id="saldoAkhirList"></div>
 
-<div class="balance-total">
+<div class="summary-total-box">
 
-<span>TOTAL SALDO AKHIR</span>
+<div class="summary-total-title">
+TOTAL SALDO AKHIR
+</div>
 
-<span id="totalSaldoAkhir">
+<div
+class="summary-total-value"
+id="totalSaldoAkhir">
+
 Rp 0
-</span>
+
+</div>
 
 </div>
 
@@ -1943,14 +1981,20 @@ Rp 0
 
 <div class="summary-card">
 
-<h3>
-TOTAL CASH AKHIR</h3>
+<div class="summary-total-box">
 
-<div class="balance-row"
-style="border:none;">
-<strong id="totalCashAkhir">
+<div class="summary-total-title">
+TOTAL CASH AKHIR
+</div>
+
+<div
+class="summary-total-value"
+id="totalCashAkhir">
+
 Rp 0
-</strong>
+
+</div>
+
 </div>
 
 </div>
