@@ -1894,30 +1894,19 @@ Rp 0
 
 <div class="summary-row">
 
-  <span>FEE</span>
+<span>FEE</span>
 
-  <span
-  id="feeDisplay"
-  style="
-  font-weight:700;
-  cursor:pointer;
-  ">
-  Rp 0
-  </span>
-
-  <input
-  type="text"
-  id="feeInput"
-  style="
-  display:none;
-  width:160px;
-  text-align:right;
-  border:none;
-  outline:none;
-  font-weight:700;
-  background:transparent;
-  "
-  >
+<input
+type="text"
+id="feeInput"
+placeholder="Rp 0"
+style="
+width:140px;
+text-align:right;
+padding:6px;
+border:1px solid #dfe5e8;
+border-radius:8px;
+">
 
 </div>
 
@@ -4231,130 +4220,39 @@ renderMutasi();
 
 }
 
-  /* =========================
-FEE EXCEL MODE
+ /* =========================
+FEE MANUAL
 ========================= */
 
-const feeDisplay =
-document.getElementById(
-'feeDisplay'
-);
-
 const feeInput =
-document.getElementById(
-'feeInput'
-);
+document.getElementById('feeInput');
 
-let feeFormula =
-localStorage.getItem(
-'feeFormula'
-) || '=0';
-
-let feeTotal =
+const feeTersimpan =
 Number(
-localStorage.getItem(
-'feeTotal'
-)
+localStorage.getItem('feeTotal')
 ) || 0;
 
-function renderFee(){
-
-  feeDisplay.textContent =
-  formatRupiah(
-    feeTotal
-  );
-
-}
-
-feeDisplay.addEventListener(
-'dblclick',
-function(){
-
-  feeDisplay.style.display =
-  'none';
-
-  feeInput.style.display =
-  'block';
-
-  feeInput.value =
-  feeFormula;
-
-  feeInput.focus();
-
-});
-
-function simpanFee(){
-
-  const rumus =
-  feeInput.value.trim();
-
-  try{
-
-    if(
-      !rumus.startsWith('=')
-    ){
-      throw 'error';
-    }
-
-    const hasil =
-    Function(
-      'return ' +
-      rumus.substring(1)
-    )();
-
-    feeFormula = rumus;
-
-    feeTotal = hasil;
-
-    localStorage.setItem(
-      'feeFormula',
-      feeFormula
-    );
-
-    localStorage.setItem(
-      'feeTotal',
-      feeTotal
-    );
-
-    renderFee();
-
-    updateAllRekap();
-
-    feeInput.style.display =
-    'none';
-
-    feeDisplay.style.display =
-    'block';
-
- }catch{
-
-  feeInput.style.border =
-  '1px solid red';
-
-  return;
-
-}
-
-}
-
-feeInput.addEventListener(
-'keydown',
-function(e){
-
-  if(e.key === 'Enter'){
-
-    simpanFee();
-
-  }
-
-});
+feeInput.value =
+formatRupiah(feeTersimpan);
 
 feeInput.addEventListener(
 'blur',
-simpanFee
-);
+function(){
 
-renderFee();
+  const nilai =
+  parseRupiah(this.value);
+
+  this.value =
+  formatRupiah(nilai);
+
+  localStorage.setItem(
+    'feeTotal',
+    nilai
+  );
+
+  updateAllRekap();
+
+});
 
 renderSaldoTable();
 
