@@ -874,32 +874,6 @@ RIGHT PANEL
   font-size:18px;
 }
 
-.check-row{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  padding:12px 0;
-}
-
-.balance-badge{
-
-  background:#e7f6eb;
-
-  color:#15803d;
-
-  padding:8px 14px;
-
-  border-radius:12px;
-
-  font-size:13px;
-
-  font-weight:700;
-}
-
 /* =========================
 BOTTOM BUTTON
 ========================= */
@@ -2001,46 +1975,6 @@ Rp 0
 
 </div>
 
-<div class="summary-card">
-
-<h3>
-CEK KESEIMBANGAN
-</h3>
-
-<div class="check-row">
-
-<div style="display:flex;gap:10px;align-items:center;">
-<i class="fa-regular fa-circle-check" id="saldoBalanceIcon"
-style="color:#16a34a;"></i>
-
-<span>Saldo Balance</span>
-</div>
-
-<div class="balance-badge" id="saldoBalanceBadge">
-BALANCE
-</div>
-
-</div>
-
-<div class="check-row">
-
-<div style="display:flex;gap:10px;align-items:center;">
-<i class="fa-regular fa-circle-check" id="cashBalanceIcon"
-style="color:#16a34a;"></i>
-
-<span>Cash Balance</span>
-</div>
-
-<div class="balance-badge" id="cashBalanceBadge">
-BALANCE
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -2597,54 +2531,7 @@ expectedAkhir
 
 }
 
-function setBalanceBadge(badgeEl, iconEl, ok){
 
-if(!badgeEl) return;
-
-badgeEl.textContent =
-ok ? "BALANCE" : "TIDAK BALANCE";
-
-badgeEl.style.background =
-ok ? "#dcfce7" : "#fee2e2";
-
-badgeEl.style.color =
-ok ? "#15803d" : "#b91c1c";
-
-if(iconEl){
-
-iconEl.className =
-ok
-? "fa-regular fa-circle-check"
-: "fa-regular fa-circle-xmark";
-
-iconEl.style.color =
-ok ? "#16a34a" : "#dc2626";
-
-}
-
-}
-
-function updateCekKeseimbangan(rekap){
-
-const selisih =
-rekap.modalAkhir - rekap.expectedAkhir;
-
-const ok =
-Math.abs(selisih) < 1;
-
-setBalanceBadge(
-document.getElementById("saldoBalanceBadge"),
-document.getElementById("saldoBalanceIcon"),
-ok
-);
-
-setBalanceBadge(
-document.getElementById("cashBalanceBadge"),
-document.getElementById("cashBalanceIcon"),
-ok
-);
-
-}
 
 function updateAllRekap(){
 
@@ -2739,10 +2626,6 @@ if(jumlahEl){
 
 jumlahEl.textContent =
 transaksiData.length + " Transaksi";
-
-}
-
-updateCekKeseimbangan(rekap);
 
 }
 
