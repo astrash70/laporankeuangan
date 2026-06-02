@@ -2508,7 +2508,11 @@ Number(
 localStorage.getItem("feeTotal")
 ) || 0;
 
-cashAkhir += fee;
+if(saldoAkhir["Mesin EDC"] !== undefined){
+
+saldoAkhir["Mesin EDC"] += fee;
+
+}
 
 const totalSaldoAkhir =
 Object.values(saldoAkhir)
