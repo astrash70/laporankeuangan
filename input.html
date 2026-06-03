@@ -3269,6 +3269,11 @@ function closeTransaksiPopup(){
   data.jenis;
 
   document.getElementById(
+  'RekeningNasabah'
+).value =
+data.rekening || '';
+
+  document.getElementById(
     'nominalTransaksi'
   ).value =
   data.nominal;
@@ -3559,6 +3564,11 @@ function simpanTransaksi(){
     'jenisTransaksi'
   ).value;
 
+  const rekening =
+document.getElementById(
+  'RekeningNasabah'
+).value;
+
   const nominal =
   document.getElementById(
     'nominalTransaksi'
@@ -3631,6 +3641,10 @@ document.getElementById(
 ).value = '';
 
 document.getElementById(
+  'RekeningNasabah'
+).value = '';
+
+document.getElementById(
 'nominalTransaksi'
 ).value = '';
 
@@ -3661,8 +3675,8 @@ return;
 }
 
  const dataBaru = {
-
   jenis,
+  rekening,
   nominal,
   admin,
   adminBank,
@@ -3670,7 +3684,6 @@ return;
   cash,
   SumberSaldo,
   keterangan
-
 };
 
 if(
@@ -4115,12 +4128,11 @@ item.nominal
 table.innerHTML += `
 <tr>
 
-<td>${index+1}</td>
 <td>${item.jenis}</td>
+<td>${item.rekening || '-'}</td>
 <td>${item.nominal}</td>
+<td>${item.admin}</td>
 <td>${item.adminBank}</td>
-<td>${item.arah}</td>
-<td>${item.cash}</td>
 <td>${item.keterangan}</td>
 
 <td>
