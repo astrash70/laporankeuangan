@@ -2185,12 +2185,13 @@ type="text"
 id="SumberSaldoTransaksi"
 readonly>
 
-<label>Keterangan</label>
-
 <input
-type="text"
 id="keteranganTransaksi"
-placeholder="Nama Nasabah">
+list="listNasabah"
+placeholder="Nama Nasabah"
+>
+
+<datalist id="listNasabah"></datalist>
 
 <button
 class="save-btn"
@@ -3177,6 +3178,30 @@ localStorage.getItem(
 'nasabahData'
 )
 ) || {};
+
+
+function renderNasabahList(){
+
+const datalist =
+document.getElementById(
+'listNasabah'
+);
+
+if(!datalist) return;
+
+datalist.innerHTML = '';
+
+Object.keys(nasabahData)
+.sort()
+.forEach(nama=>{
+
+datalist.innerHTML += `
+<option value="${nama.toUpperCase()}">
+`;
+
+});
+
+}
   
 
     let editTransaksiIndex = null;
@@ -3636,6 +3661,8 @@ localStorage.setItem(
 'nasabahData',
 JSON.stringify(nasabahData)
 );
+
+    renderNasabahList();
 
 }
 
@@ -4387,6 +4414,8 @@ renderMutasi();
 renderTransaksi();
 
 updateAllRekap();
+
+renderNasabahList();
 
 /* =========================
 DRAFT / RESET / FINALISASI
