@@ -3171,6 +3171,14 @@ JSON.parse(
   )
 ) || [];
 
+let nasabahData =
+JSON.parse(
+localStorage.getItem(
+'nasabahData'
+)
+) || {};
+  
+
     let editTransaksiIndex = null;
 
 /* =========================
@@ -3616,6 +3624,22 @@ document.getElementById(
   ).value;
 
   if(
+keterangan.trim() &&
+rekening.trim()
+){
+
+nasabahData[
+keterangan.trim().toLowerCase()
+] = rekening.trim();
+
+localStorage.setItem(
+'nasabahData',
+JSON.stringify(nasabahData)
+);
+
+}
+
+  if(
 document
 .getElementById(
 "transaksiPopup"
@@ -3957,6 +3981,34 @@ document
   isiMetaDariJenis(this.value);
 
 });
+
+
+  document
+.getElementById(
+'keteranganTransaksi'
+)
+.addEventListener(
+'input',
+function(){
+
+const nama =
+this.value
+.trim()
+.toLowerCase();
+
+if(
+nasabahData[nama]
+){
+
+document.getElementById(
+'RekeningNasabah'
+).value =
+nasabahData[nama];
+
+}
+
+}
+);
 
   /* =========================
 AUTO ADMIN DARI RANGE
