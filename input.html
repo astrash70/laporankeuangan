@@ -4133,8 +4133,21 @@ table.innerHTML += `
 <td>${item.jenis}</td>
 <td>${item.nominal}</td>
 <td>${item.adminBank}</td>
-<td>${item.kategori}</td>
-<td>${item.efek}</td>
+<td class="${
+  item.arah.includes('Saldo In')
+  ? 'green'
+  : 'red'
+}">
+  ${item.arah}
+</td>
+
+<td class="${
+  item.cash.includes('Cash In')
+  ? 'green'
+  : 'red'
+}">
+  ${item.cash}
+</td>
 <td>${item.keterangan}</td>
 
 <td>
