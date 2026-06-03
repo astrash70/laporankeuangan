@@ -22,6 +22,9 @@ rel="stylesheet">
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 <style>
 
 /* =========================
@@ -1455,9 +1458,22 @@ Catat semua transaksi dan kondisi keuangan hari ini
 <div class="topbar-right">
 
 <div class="date-box">
+
 <i class="fa-regular fa-calendar"></i>
-<span id="tanggalHariIni"></span>
+
+<input
+id="tanggalPicker"
+readonly
+style="
+border:none;
+background:none;
+font-weight:600;
+cursor:pointer;
+width:120px;
+">
+
 <i class="fa-solid fa-chevron-down"></i>
+
 </div>
 
 <div class="user-box">
@@ -2207,7 +2223,8 @@ Simpan
 
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
   
 <script>
 
@@ -4524,17 +4541,38 @@ console.error(e);
 });
 
 
-  const hariIni = new Date();
-
-document.getElementById(
-'tanggalHariIni'
-).textContent =
-hariIni.toLocaleDateString(
-'id-ID',
+  flatpickr(
+"#tanggalPicker",
 {
-day:'numeric',
-month:'long',
-year:'numeric'
+locale: flatpickr.l10ns.id
+
+dateFormat:"d F Y",
+
+defaultDate:new Date(),
+
+allowInput:false,
+
+onChange:function(
+selectedDates
+){
+
+const tanggal =
+selectedDates[0]
+.toISOString()
+.slice(0,10);
+
+console.log(
+'Tanggal dipilih:',
+tanggal
+);
+
+/*
+nanti load laporan
+berdasarkan tanggal
+di sini
+*/
+
+}
 }
 );
   
