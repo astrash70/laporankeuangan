@@ -2487,9 +2487,19 @@ transaksiData.forEach(item =>
 prosesBaris(item, true)
 );
 
-(mutasiData || []).forEach(item =>
-prosesBaris(item, false)
+(mutasiData || []).forEach(item => {
+
+console.log(
+'REKAP',
+item.jenis,
+item.cash,
+item.arah,
+item.nominal
 );
+
+prosesBaris(item, false);
+
+});
 
 const fee =
 Number(
@@ -4147,6 +4157,14 @@ table.innerHTML += `
   : 'red'
 }">
   ${item.cash}
+
+  console.log(
+'MUTASI',
+item.jenis,
+item.cash,
+item.arah,
+item.nominal
+);
 </td>
 <td>${item.keterangan}</td>
 
