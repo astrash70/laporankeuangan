@@ -1677,7 +1677,7 @@ background:white;
 
 <th>No</th>
 <th>Jenis Transaksi</th>
-<th>Nomor Rekening</th>
+<th>Rekening</th>
 <th>Nominal</th>
 <th>Admin</th>
 <th>Admin Bank</th>
@@ -2136,7 +2136,7 @@ width:100%;
 
 <datalist id="jenisTransaksiList"></datalist>
 
-<label>Nomor Rekening</label>
+<label>Rekening</label>
 
 <input
 type="text"
@@ -3341,7 +3341,7 @@ function renderTransaksi(){
 
     <tr id="emptyTransaksi">
 
-      <td colspan="9"
+      <td colspan="8"
       style="
       text-align:center;
       padding:40px;
@@ -3397,21 +3397,39 @@ transaksiData.filter(item =>
 
 filteredData.forEach((item,index)=>{
 
-    table.innerHTML += `
+table.innerHTML += `
 
-    <tr>
+<tr>
 
-      <td>${index + 1}</td>
+<td>${index + 1}</td>
 
-      <td>${item.jenis}</td>
+<td>
 
-      <td>${item.nominal}</td>
+${item.jenis}
 
-      <td>${item.admin}</td>
+${
+item.arah?.includes('Saldo In')
+? '<span class="green"> ↑</span>'
+: '<span class="red"> ↓</span>'
+}
 
-      <td>${item.adminBank}</td>
+${
+item.cash?.includes('Cash In')
+? '<span class="green"> ↙</span>'
+: '<span class="red"> ↗</span>'
+}
 
-      <td class="${
+</td>
+
+<td>${item.rekening}</td>
+
+<td>${item.nominal}</td>
+
+<td>${item.admin}</td>
+
+<td>${item.adminBank}</td>
+
+<td class="${
   item.arah.includes('Saldo In')
   ? 'green'
   : 'red'
@@ -3419,7 +3437,7 @@ filteredData.forEach((item,index)=>{
   ${item.arah}
 </td>
 
-      <td class="${
+<td class="${
   item.cash.includes('Cash In')
   ? 'green'
   : 'red'
@@ -3427,7 +3445,7 @@ filteredData.forEach((item,index)=>{
   ${item.cash}
 </td>
 
-      <td>${item.keterangan}</td>
+<td>${item.keterangan}</td>
 
       <td
 style="
@@ -3507,7 +3525,7 @@ for(let i = 0; i < kosong; i++){
 
     <tr>
 
-      <td colspan="9"
+      <td colspan="8"
       style="
       text-align:center;
       padding:40px;
@@ -4127,11 +4145,12 @@ item.nominal
 table.innerHTML += `
 <tr>
 
+<td>${index+1}</td>
 <td>${item.jenis}</td>
-<td>${item.rekening || '-'}</td>
 <td>${item.nominal}</td>
-<td>${item.admin}</td>
 <td>${item.adminBank}</td>
+<td>${item.kategori}</td>
+<td>${item.efek}</td>
 <td>${item.keterangan}</td>
 
 <td>
