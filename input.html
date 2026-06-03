@@ -1320,6 +1320,8 @@ POPUP
   height:42px;
   color:transparent;
 }
+
+  
   
 </style>
 
@@ -1453,7 +1455,7 @@ Catat semua transaksi dan kondisi keuangan hari ini
 
 <div class="date-box">
 <i class="fa-regular fa-calendar"></i>
-22 Mei 2026
+<span id="tanggalHariIni"></span>
 <i class="fa-solid fa-chevron-down"></i>
 </div>
 
@@ -4133,6 +4135,14 @@ total += parseRupiah(
 item.nominal
 );
 
+console.log(
+'MUTASI',
+item.jenis,
+item.cash,
+item.arah,
+item.nominal
+);
+  
 table.innerHTML += `
 <tr>
 
@@ -4154,14 +4164,6 @@ table.innerHTML += `
   : 'red'
 }">
   ${item.cash}
-
-  console.log(
-'MUTASI',
-item.jenis,
-item.cash,
-item.arah,
-item.nominal
-);
 </td>
 <td>${item.keterangan}</td>
 
@@ -4438,6 +4440,21 @@ console.error(e);
 }
 
 });
+
+
+  const hariIni = new Date();
+
+document.getElementById(
+'tanggalHariIni'
+).textContent =
+hariIni.toLocaleDateString(
+'id-ID',
+{
+day:'numeric',
+month:'long',
+year:'numeric'
+}
+);
   
 </script>
 
