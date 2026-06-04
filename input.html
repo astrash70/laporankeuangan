@@ -1325,128 +1325,104 @@ POPUP
   color:transparent;
 }
 
-  /* ===== FLATPICKR MODERN ===== */
+ .calendar-card{
 
-.flatpickr-calendar{
-  width:360px !important;
+background:white;
+border:1px solid #e5e7eb;
+border-radius:24px;
+padding:24px;
 
-  border:none !important;
-  border-radius:20px !important;
-
-  box-shadow:
-  0 10px 35px rgba(0,0,0,.12) !important;
-
-  padding:12px !important;
 }
 
-.flatpickr-months{
-  margin-bottom:10px;
-}
+.calendar-header{
 
-.flatpickr-current-month{
-  font-weight:700 !important;
-  font-size:15px !important;
-}
-
-.flatpickr-prev-month,
-.flatpickr-next-month{
-  color:#15803d !important;
-}
-
-.flatpickr-weekday{
-  font-weight:600 !important;
-  color:#64748b !important;
-}
-
-.flatpickr-day{
-  border-radius:10px !important;
-}
-
-.flatpickr-day.selected{
-  background:#15803d !important;
-  border-color:#15803d !important;
-}
-
-.flatpickr-day.today{
-  border:1.5px solid #15803d !important;
-}
-
-.flatpickr-day:hover{
-  background:#f0fdf4 !important;
-}
-
-
-  /* HEADER KALENDER */
-
-.flatpickr-current-month{
-
-    left:0 !important;
-    width:100% !important;
-
-    display:flex !important;
-    justify-content:center !important;
-    align-items:center !important;
-
-    gap:6px !important;
-
-    padding:0 !important;
-}
-
-/* bulan */
-
-.flatpickr-monthDropdown-months{
-
-    appearance:none !important;
-    border:none !important;
-    background:transparent !important;
-
-    font-size:16px !important;
-    font-weight:700 !important;
-
-    padding:0 !important;
-    margin:0 !important;
-
-    cursor:pointer !important;
-    pointer-events:auto !important;
-}
-
-/* tahun */
-
-.flatpickr-current-month input.cur-year{
-    border:none !important;
-    background:transparent !important;
-    font-size:16px !important;
-    font-weight:700 !important;
-    width:60px !important;
-    pointer-events:auto;
-}
-
-/* panah kiri kanan */
-
-.flatpickr-prev-month{
-    left:12px !important;
-}
-
-.flatpickr-next-month{
-    right:12px !important;
-}
-
-.flatpickr-calendar{
-width:420px !important;
-}
-
-.flatpickr-day{
-height:60px !important;
-max-height:60px !important;
-display:flex !important;
-flex-direction:column;
-justify-content:flex-start;
+display:flex;
+justify-content:space-between;
 align-items:center;
-padding-top:6px;
+margin-bottom:20px;
+
 }
 
-.flatpickr-day:hover{
-z-index:10;
+.calendar-title{
+
+font-size:38px;
+font-weight:700;
+
+display:flex;
+gap:14px;
+align-items:center;
+
+}
+
+.calendar-nav{
+
+display:flex;
+gap:12px;
+align-items:center;
+
+}
+
+.calendar-nav button,
+.calendar-nav select{
+
+height:54px;
+
+padding:0 18px;
+
+border:1px solid #e5e7eb;
+
+border-radius:14px;
+
+background:white;
+
+font-size:16px;
+
+}
+
+.calendar-table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+.calendar-table th{
+
+height:70px;
+text-align:center;
+
+font-size:18px;
+
+}
+
+.calendar-table td{
+
+height:105px;
+
+text-align:center;
+
+font-size:32px;
+
+border:1px solid #edf2f7;
+
+cursor:pointer;
+
+}
+
+.calendar-table td.active{
+
+background:#e8f6ef;
+
+color:#0f7a3c;
+
+font-weight:700;
+
+}
+
+.calendar-table td.sunday{
+
+color:red;
+
 }
   
   
@@ -1580,28 +1556,7 @@ Catat semua transaksi dan kondisi keuangan hari ini
 
 <div class="topbar-right">
 
-<div class="date-box">
-
-<i class="fa-regular fa-calendar"></i>
-
-<input
-id="tanggalPicker"
-readonly
-style="
-border:none;
-background:none;
-font-weight:600;
-cursor:pointer;
-width:120px;
-">
-
-<i
-id="openCalendar"
-class="fa-solid fa-chevron-down"
-style="cursor:pointer;">
-</i>
-
-</div>
+<div id="calendarContainer"></div>
 
 <div class="user-box">
 
@@ -2350,8 +2305,60 @@ Simpan
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+<div class="calendar-card">
+
+<div class="calendar-header">
+
+<div class="calendar-title">
+<i class="fa-regular fa-calendar"></i>
+Kalender
+</div>
+
+<div class="calendar-nav">
+
+<button id="prevMonth">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+
+<select id="monthSelect"></select>
+
+<select id="yearSelect"></select>
+
+<button id="nextMonth">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+
+<button id="todayBtn">
+Hari Ini
+</button>
+
+</div>
+
+</div>
+
+<table class="calendar-table">
+
+<thead>
+<tr>
+<th>Min</th>
+<th>Sen</th>
+<th>Sel</th>
+<th>Rab</th>
+<th>Kam</th>
+<th>Jum</th>
+<th>Sab</th>
+</tr>
+</thead>
+
+<tbody id="calendarBody">
+</tbody>
+
+</table>
+
+<div id="holidayInfo"></div>
+
+</div>
+
   
 <script>
 
@@ -4668,150 +4675,7 @@ console.error(e);
 });
 
 
-let hariLibur = {};
 
-async function loadHariLibur(){
-
-try{
-
-const tahun = new Date().getFullYear();
-
-const res = await fetch(
-`https://dayoffapi.vercel.app/api?year=${tahun}`
-);
-
-const data = await res.json();
-
-hariLibur = {};
-
-data.forEach(item=>{
-
-hariLibur[item.tanggal] = item.keterangan;
-
-});
-
-}catch(err){
-
-console.error(
-"Gagal load hari libur",
-err
-);
-
-}
-
-}
-
-loadHariLibur();
-
-const kalender = flatpickr(
-"#tanggalPicker",
-{
-
-locale:flatpickr.l10ns.id,
-
-monthSelectorType:"dropdown",
-
-dateFormat:"d F Y",
-
-defaultDate:new Date(),
-
-allowInput:false,
-
-clickOpens:true,
-
-onChange:function(selectedDates){
-
-const tanggal =
-selectedDates[0]
-.toISOString()
-.slice(0,10);
-
-console.log(
-"Tanggal dipilih:",
-tanggal
-);
-
-},
-
-onDayCreate:function(
-dObj,
-dStr,
-fp,
-dayElem
-){
-
-const tanggal =
-dayElem.dateObj
-.toISOString()
-.slice(0,10);
-
-const hari =
-dayElem.dateObj.getDay();
-
-if(hari === 0){
-
-dayElem.style.color =
-"#dc2626";
-
-dayElem.style.fontWeight =
-"700";
-
-}
-
-if(hariLibur[tanggal]){
-
-dayElem.style.color =
-"#dc2626";
-
-dayElem.style.fontWeight =
-"700";
-
-dayElem.title =
-hariLibur[tanggal];
-
-const badge =
-document.createElement("div");
-
-badge.textContent =
-hariLibur[tanggal]
-.substring(0,12);
-
-badge.style.fontSize =
-"8px";
-
-badge.style.lineHeight =
-"1";
-
-badge.style.marginTop =
-"2px";
-
-badge.style.color =
-"#dc2626";
-
-badge.style.overflow =
-"hidden";
-
-badge.style.whiteSpace =
-"nowrap";
-
-dayElem.appendChild(
-badge
-);
-
-}
-
-}
-
-}
-);
-
-document
-.getElementById("openCalendar")
-.addEventListener("click", () => {
-
-    kalender.open();
-
-});
 
   
 </script>
