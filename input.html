@@ -336,6 +336,8 @@ TOPBAR
   align-items:center;
 
   gap:16px;
+
+  position:relative;
 }
 
 .date-box{
@@ -1334,6 +1336,16 @@ padding:24px;
 
 }
 
+#calendarPopup{
+
+width:340px;
+
+max-height:420px;
+
+overflow:auto;
+
+}  
+
 .calendar-header{
 
 display:flex;
@@ -1553,35 +1565,33 @@ Catat semua transaksi dan kondisi keuangan hari ini
 
 <div class="topbar-right">
 
-<div class="user-box">
+<div class="date-box">
 
-<div class="profile-avatar"
-style="width:42px;height:42px;">
-T
-</div>
+<i class="fa-regular fa-calendar"></i>
 
-<div>
-<div style="font-weight:700;">
-Tokosayyida
-</div>
+<span id="tanggalText">
+04 Juni 2026
+</span>
 
-<div style="font-size:13px;color:#667085;">
-Admin
-</div>
-</div>
+<i
+id="openCalendar"
+class="fa-solid fa-chevron-down"
+style="cursor:pointer;">
+</i>
 
-<i class="fa-solid fa-chevron-down"
-style="margin-left:10px;"></i>
+</div>  
 
-</div>
-
-</div>
-
-</div>
-
-
-
-  <div class="calendar-card">
+<div
+id="calendarPopup"
+class="calendar-card"
+style="
+display:none;
+position:absolute;
+top:60px;
+right:0;
+width:340px;
+z-index:9999;
+">
 
 <div class="calendar-header">
 
@@ -1634,6 +1644,37 @@ Hari Ini
 
 </div>
 
+
+
+<div class="user-box">
+
+<div class="profile-avatar"
+style="width:42px;height:42px;">
+T
+</div>
+
+<div>
+<div style="font-weight:700;">
+Tokosayyida
+</div>
+
+<div style="font-size:13px;color:#667085;">
+Admin
+</div>
+</div>
+
+<i class="fa-solid fa-chevron-down"
+style="margin-left:10px;"></i>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+ 
 <!-- CONTENT GRID -->
 
 <div class="content-grid">
@@ -4968,7 +5009,42 @@ renderCalendar();
 
 renderCalendar();
 
+const btnTanggal =
+document.querySelector(
+'.date-box'
+);
 
+const popup =
+document.getElementById(
+'calendarPopup'
+);
+
+btnTanggal.addEventListener(
+'click',
+function(e){
+
+e.stopPropagation();
+
+popup.style.display =
+
+popup.style.display === 'block'
+
+? 'none'
+
+: 'block';
+
+}
+);
+
+document.addEventListener(
+'click',
+function(){
+
+popup.style.display =
+'none';
+
+}
+);
   
 </script>
 
