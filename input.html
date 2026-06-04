@@ -1431,7 +1431,23 @@ POPUP
     right:12px !important;
 }
 
+.flatpickr-calendar{
+width:420px !important;
+}
 
+.flatpickr-day{
+height:60px !important;
+max-height:60px !important;
+display:flex !important;
+flex-direction:column;
+justify-content:flex-start;
+align-items:center;
+padding-top:6px;
+}
+
+.flatpickr-day:hover{
+z-index:10;
+}
   
   
 </style>
@@ -4652,10 +4668,46 @@ console.error(e);
 });
 
 
+let hariLibur = {};
+
+async function loadHariLibur(){
+
+try{
+
+const tahun = new Date().getFullYear();
+
+const res = await fetch(
+`https://dayoffapi.vercel.app/api?year=${tahun}`
+);
+
+const data = await res.json();
+
+hariLibur = {};
+
+data.forEach(item=>{
+
+hariLibur[item.tanggal] = item.keterangan;
+
+});
+
+}catch(err){
+
+console.error(
+"Gagal load hari libur",
+err
+);
+
+}
+
+}
+
+loadHariLibur();
+
 const kalender = flatpickr(
 "#tanggalPicker",
 {
-locale: flatpickr.l10ns.id,
+
+locale:flatpickr.l10ns.id,
 
 monthSelectorType:"static",
 
@@ -4675,34 +4727,23 @@ selectedDates[0]
 .slice(0,10);
 
 console.log(
-'Tanggal dipilih:',
+"Tanggal dipilih:",
 tanggal
 );
 
-}
+},
 
-}
-);
-
-document
-.getElementById('openCalendar')
-.addEventListener(
-'click',
-function(){
-
-kalender.open();
-
-}
-);0
-
-
-
-onDayCreate: function(
+onDayCreate:function(
 dObj,
 dStr,
 fp,
 dayElem
 ){
+
+const tanggal =
+dayElem.dateObj
+.toISOString()
+.slice(0,10);
 
 const hari =
 dayElem.dateObj.getDay();
@@ -4710,14 +4751,59 @@ dayElem.dateObj.getDay();
 if(hari === 0){
 
 dayElem.style.color =
-'#dc2626';
+"#dc2626";
 
 dayElem.style.fontWeight =
-'700';
+"700";
+
+}
+
+if(hariLibur[tanggal]){
+
+dayElem.style.color =
+"#dc2626";
+
+dayElem.style.fontWeight =
+"700";
+
+dayElem.title =
+hariLibur[tanggal];
+
+const badge =
+document.createElement("div");
+
+badge.textContent =
+hariLibur[tanggal]
+.substring(0,12);
+
+badge.style.fontSize =
+"8px";
+
+badge.style.lineHeight =
+"1";
+
+badge.style.marginTop =
+"2px";
+
+badge.style.color =
+"#dc2626";
+
+badge.style.overflow =
+"hidden";
+
+badge.style.whiteSpace =
+"nowrap";
+
+dayElem.appendChild(
+badge
+);
 
 }
 
 }
+
+}
+);
 
   
 </script>
