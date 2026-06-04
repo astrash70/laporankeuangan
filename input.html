@@ -1430,6 +1430,9 @@ POPUP
 .flatpickr-next-month{
     right:12px !important;
 }
+
+
+  
   
 </style>
 
@@ -4690,7 +4693,31 @@ function(){
 kalender.open();
 
 }
-);
+);0
+
+
+
+onDayCreate: function(
+dObj,
+dStr,
+fp,
+dayElem
+){
+
+const hari =
+dayElem.dateObj.getDay();
+
+if(hari === 0){
+
+dayElem.style.color =
+'#dc2626';
+
+dayElem.style.fontWeight =
+'700';
+
+}
+
+}
 
   
 </script>
