@@ -4782,35 +4782,8 @@ let currentDate = new Date();
 /* LIBUR NASIONAL API */
 
 async function getHolidays(year){
-
-try{
-
-const res = await fetch(
-`https://dayoffapi.vercel.app/api?year=${year}`
-);
-
-const data = await res.json();
-
-const holidays = {};
-
-data.forEach(item=>{
-
-holidays[item.tanggal] = item.keterangan;
-
-});
-
-return holidays;
-
-}catch(err){
-
-console.error(err);
-
 return {};
-
 }
-
-}
-
 
 
 async function renderCalendar(){
@@ -4996,18 +4969,35 @@ renderCalendar();
 renderCalendar();
 
 const btnTanggal =
-document.querySelector(
-'.date-box'
-);
+document.querySelector('.date-box');
 
 const popup =
-document.getElementById(
-'calendarPopup'
-);
+document.getElementById('calendarPopup');
+
+if(btnTanggal && popup){
 
 btnTanggal.addEventListener(
 'click',
 function(e){
+
+e.stopPropagation();
+
+popup.style.display =
+popup.style.display === 'block'
+? 'none'
+: 'block';
+
+});
+
+document.addEventListener(
+'click',
+function(){
+
+popup.style.display = 'none';
+
+});
+
+}
 
 e.stopPropagation();
 
