@@ -1325,7 +1325,51 @@ POPUP
   color:transparent;
 }
 
-  
+  /* ===== FLATPICKR MODERN ===== */
+
+.flatpickr-calendar{
+  border:none !important;
+  border-radius:20px !important;
+  box-shadow:0 10px 35px rgba(0,0,0,.12) !important;
+  padding:12px !important;
+  font-family:'Inter',sans-serif !important;
+}
+
+.flatpickr-months{
+  margin-bottom:10px;
+}
+
+.flatpickr-current-month{
+  font-weight:700 !important;
+  font-size:15px !important;
+}
+
+.flatpickr-prev-month,
+.flatpickr-next-month{
+  color:#15803d !important;
+}
+
+.flatpickr-weekday{
+  font-weight:600 !important;
+  color:#64748b !important;
+}
+
+.flatpickr-day{
+  border-radius:10px !important;
+}
+
+.flatpickr-day.selected{
+  background:#15803d !important;
+  border-color:#15803d !important;
+}
+
+.flatpickr-day.today{
+  border:1.5px solid #15803d !important;
+}
+
+.flatpickr-day:hover{
+  background:#f0fdf4 !important;
+}
   
 </style>
 
@@ -1472,7 +1516,11 @@ cursor:pointer;
 width:120px;
 ">
 
-<i class="fa-solid fa-chevron-down"></i>
+<i
+id="openCalendar"
+class="fa-solid fa-chevron-down"
+style="cursor:pointer;">
+</i>
 
 </div>
 
@@ -4541,7 +4589,7 @@ console.error(e);
 });
 
 
- flatpickr(
+const kalender = flatpickr(
 "#tanggalPicker",
 {
 locale: flatpickr.l10ns.id,
@@ -4551,6 +4599,8 @@ dateFormat:"d F Y",
 defaultDate:new Date(),
 
 allowInput:false,
+
+clickOpens:false,
 
 onChange:function(selectedDates){
 
@@ -4568,6 +4618,19 @@ tanggal
 
 }
 );
+
+document
+.getElementById('openCalendar')
+.addEventListener(
+'click',
+function(){
+
+kalender.open();
+
+}
+);
+
+  
 </script>
 
 </body>
