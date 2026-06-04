@@ -4541,10 +4541,10 @@ console.error(e);
 });
 
 
-  flatpickr(
+ flatpickr(
 "#tanggalPicker",
 {
-locale: flatpickr.l10ns.id
+locale: flatpickr.l10ns.id,
 
 dateFormat:"d F Y",
 
@@ -4552,9 +4552,7 @@ defaultDate:new Date(),
 
 allowInput:false,
 
-onChange:function(
-selectedDates
-){
+onChange:function(selectedDates){
 
 const tanggal =
 selectedDates[0]
@@ -4566,16 +4564,10 @@ console.log(
 tanggal
 );
 
-/*
-nanti load laporan
-berdasarkan tanggal
-di sini
-*/
+}
 
 }
-}
 );
-  
 </script>
 
 </body>
