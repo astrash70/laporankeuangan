@@ -4706,7 +4706,7 @@ const kalender = flatpickr(
 
 locale:flatpickr.l10ns.id,
 
-monthSelectorType:"static",
+monthSelectorType:"dropdown",
 
 dateFormat:"d F Y",
 
@@ -4714,7 +4714,7 @@ defaultDate:new Date(),
 
 allowInput:false,
 
-clickOpens:false,
+clickOpens:true,
 
 onChange:function(selectedDates){
 
@@ -4801,6 +4801,14 @@ badge
 
 }
 );
+
+document
+.getElementById("openCalendar")
+.addEventListener("click", () => {
+
+    kalender.open();
+
+});
 
   
 </script>
