@@ -4971,11 +4971,6 @@ color:#dc2626;
 
 populateDropdown();
 
-yearSelect.addEventListener(
-"change",
-renderCalendar
-);
-
 document
 .getElementById("prevMonth")
 .addEventListener("click",()=>{
@@ -5000,19 +4995,10 @@ renderCalendar();
 
 });
 
-document
-.getElementById("todayBtn")
+document.getElementById("todayBtn")
 .addEventListener("click",()=>{
 
-const now =
-new Date();
-
-monthSelect.value =
-now.getMonth();
-
-yearSelect.value =
-now.getFullYear();
-
+currentDate = new Date();
 renderCalendar();
 
 });
