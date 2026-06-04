@@ -1397,15 +1397,12 @@ font-size:18px;
 
 .calendar-table td{
 
-height:105px;
-
+height:120px;
+vertical-align:top;
+padding-top:10px;
 text-align:center;
-
-font-size:32px;
-
-border:1px solid #edf2f7;
-
-cursor:pointer;
+font-size:22px;
+position:relative;
 
 }
 
@@ -1556,8 +1553,6 @@ Catat semua transaksi dan kondisi keuangan hari ini
 
 <div class="topbar-right">
 
-<div id="calendarContainer"></div>
-
 <div class="user-box">
 
 <div class="profile-avatar"
@@ -1581,6 +1576,61 @@ style="margin-left:10px;"></i>
 </div>
 
 </div>
+
+</div>
+
+
+
+  <div class="calendar-card">
+
+<div class="calendar-header">
+
+<div class="calendar-title">
+<i class="fa-regular fa-calendar"></i>
+Kalender
+</div>
+
+<div class="calendar-nav">
+
+<button id="prevMonth">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+
+<select id="monthSelect"></select>
+
+<select id="yearSelect"></select>
+
+<button id="nextMonth">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+
+<button id="todayBtn">
+Hari Ini
+</button>
+
+</div>
+
+</div>
+
+<table class="calendar-table">
+
+<thead>
+<tr>
+<th>Min</th>
+<th>Sen</th>
+<th>Sel</th>
+<th>Rab</th>
+<th>Kam</th>
+<th>Jum</th>
+<th>Sab</th>
+</tr>
+</thead>
+
+<tbody id="calendarBody"></tbody>
+
+</table>
+
+<div id="holidayInfo"></div>
 
 </div>
 
@@ -2305,59 +2355,6 @@ Simpan
 
 </div>
 
-<div class="calendar-card">
-
-<div class="calendar-header">
-
-<div class="calendar-title">
-<i class="fa-regular fa-calendar"></i>
-Kalender
-</div>
-
-<div class="calendar-nav">
-
-<button id="prevMonth">
-<i class="fa-solid fa-chevron-left"></i>
-</button>
-
-<select id="monthSelect"></select>
-
-<select id="yearSelect"></select>
-
-<button id="nextMonth">
-<i class="fa-solid fa-chevron-right"></i>
-</button>
-
-<button id="todayBtn">
-Hari Ini
-</button>
-
-</div>
-
-</div>
-
-<table class="calendar-table">
-
-<thead>
-<tr>
-<th>Min</th>
-<th>Sen</th>
-<th>Sel</th>
-<th>Rab</th>
-<th>Kam</th>
-<th>Jum</th>
-<th>Sab</th>
-</tr>
-</thead>
-
-<tbody id="calendarBody">
-</tbody>
-
-</table>
-
-<div id="holidayInfo"></div>
-
-</div>
 
   
 <script>
@@ -4674,7 +4671,302 @@ console.error(e);
 
 });
 
+/* =========================
+KALENDER NASIONAL INDONESIA
+========================= */
 
+const monthSelect = document.getElementById("monthSelect");
+const yearSelect = document.getElementById("yearSelect");
+const calendarBody = document.getElementById("calendarBody");
+const holidayInfo = document.getElementById("holidayInfo");
+
+let currentDate = new Date();
+
+/* LIBUR NASIONAL API */
+
+async function getHolidays(year){
+
+try{
+
+const res = await fetch(
+`https://dayoffapi.vercel.app/api?year=${year}`
+);
+
+const data = await res.json();
+
+const holidays = {};
+
+data.forEach(item=>{
+
+holidays[item.tanggal] = item.keterangan;
+
+});
+
+return holidays;
+
+}catch(err){
+
+console.error(err);
+
+return {};
+
+}
+
+}
+
+function populateDropdown(){
+
+const bulan = [
+"Januari","Februari","Maret",
+"April","Mei","Juni",
+"Juli","Agustus","September",
+"Oktober","November","Desember"
+];
+
+monthSelect.innerHTML = "";
+
+bulan.forEach((b,i)=>{
+
+monthSelect.innerHTML +=
+`<option value="${i}">${b}</option>`;
+
+});
+
+yearSelect.innerHTML = "";
+
+for(let y=2020;y<=2050;y++){
+
+yearSelect.innerHTML +=
+`<option value="${y}">${y}</option>`;
+
+}
+
+}
+
+async function renderCalendar(){
+
+const year =
+parseInt(yearSelect.value);
+
+const month =
+parseInt(monthSelect.value);
+
+const holidays =
+await getHolidays(year);
+
+calendarBody.innerHTML = "";
+
+const firstDay =
+new Date(year,month,1);
+
+const lastDay =
+new Date(year,month+1,0);
+
+const startDay =
+firstDay.getDay();
+
+const totalDays =
+lastDay.getDate();
+
+let date = 1;
+
+for(let row=0; row<6; row++){
+
+const tr =
+document.createElement("tr");
+
+for(let col=0; col<7; col++){
+
+const td =
+document.createElement("td");
+
+if(
+row===0 &&
+col<startDay
+){
+
+td.innerHTML = "";
+
+}else if(
+date <= totalDays
+){
+
+const tanggal =
+`${year}-${String(month+1).padStart(2,'0')}-${String(date).padStart(2,'0')}`;
+
+const isSunday =
+col === 0;
+
+const holidayName =
+holidays[tanggal];
+
+let html = `
+<div style="font-size:30px;font-weight:600;">
+${date}
+</div>
+`;
+
+if(holidayName){
+
+html += `
+<div style="
+font-size:11px;
+color:#dc2626;
+margin-top:4px;
+line-height:1.2;
+padding:0 4px;
+">
+${holidayName}
+</div>
+`;
+
+td.style.background =
+"#fff5f5";
+
+td.title =
+holidayName;
+
+}
+
+if(isSunday){
+
+td.style.color =
+"#dc2626";
+}
+
+td.innerHTML = html;
+
+date++;
+
+}
+
+tr.appendChild(td);
+
+}
+
+calendarBody.appendChild(tr);
+
+if(date > totalDays) break;
+
+}
+
+const list =
+Object.entries(holidays);
+
+holidayInfo.innerHTML = "";
+
+list.forEach(([tgl,nama])=>{
+
+if(
+tgl.startsWith(
+`${year}-${String(month+1).padStart(2,'0')}`
+)
+){
+
+holidayInfo.innerHTML += `
+<div style="
+font-size:14px;
+margin-top:8px;
+color:#dc2626;
+">
+● ${tgl} - ${nama}
+</div>
+`;
+
+}
+
+});
+
+}
+
+populateDropdown();
+
+monthSelect.value =
+currentDate.getMonth();
+
+yearSelect.value =
+currentDate.getFullYear();
+
+monthSelect.addEventListener(
+"change",
+renderCalendar
+);
+
+yearSelect.addEventListener(
+"change",
+renderCalendar
+);
+
+document
+.getElementById("prevMonth")
+.addEventListener("click",()=>{
+
+let m =
+parseInt(monthSelect.value);
+
+let y =
+parseInt(yearSelect.value);
+
+m--;
+
+if(m < 0){
+
+m = 11;
+y--;
+
+}
+
+monthSelect.value = m;
+yearSelect.value = y;
+
+renderCalendar();
+
+});
+
+document
+.getElementById("nextMonth")
+.addEventListener("click",()=>{
+
+let m =
+parseInt(monthSelect.value);
+
+let y =
+parseInt(yearSelect.value);
+
+m++;
+
+if(m > 11){
+
+m = 0;
+y++;
+
+}
+
+monthSelect.value = m;
+yearSelect.value = y;
+
+renderCalendar();
+
+});
+
+document
+.getElementById("todayBtn")
+.addEventListener("click",()=>{
+
+const now =
+new Date();
+
+monthSelect.value =
+now.getMonth();
+
+yearSelect.value =
+now.getFullYear();
+
+renderCalendar();
+
+});
+
+renderCalendar();
 
 
   
