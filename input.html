@@ -1370,6 +1370,62 @@ POPUP
 .flatpickr-day:hover{
   background:#f0fdf4 !important;
 }
+
+
+  /* HEADER KALENDER */
+
+.flatpickr-current-month{
+
+    left:0 !important;
+    width:100% !important;
+
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+
+    gap:6px !important;
+
+    padding:0 !important;
+}
+
+/* bulan */
+
+.flatpickr-monthDropdown-months{
+
+    appearance:none !important;
+    border:none !important;
+    background:transparent !important;
+
+    font-size:16px !important;
+    font-weight:700 !important;
+
+    padding:0 !important;
+    margin:0 !important;
+}
+
+/* tahun */
+
+.flatpickr-current-month input.cur-year{
+
+    border:none !important;
+    background:transparent !important;
+
+    font-size:16px !important;
+    font-weight:700 !important;
+
+    width:60px !important;
+    pointer-events:none;
+}
+
+/* panah kiri kanan */
+
+.flatpickr-prev-month{
+    left:12px !important;
+}
+
+.flatpickr-next-month{
+    right:12px !important;
+}
   
 </style>
 
@@ -4593,6 +4649,8 @@ const kalender = flatpickr(
 "#tanggalPicker",
 {
 locale: flatpickr.l10ns.id,
+
+monthSelectorType:"static",
 
 dateFormat:"d F Y",
 
