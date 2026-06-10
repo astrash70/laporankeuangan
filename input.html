@@ -5023,9 +5023,16 @@ popup.style.display === 'block'
 
 document.addEventListener(
 'click',
-function(){
+function(e){
+
+if(
+!popup.contains(e.target) &&
+!btnTanggal.contains(e.target)
+){
 
 popup.style.display = 'none';
+
+}
 
 });
 
