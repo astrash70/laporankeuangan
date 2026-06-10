@@ -1495,6 +1495,29 @@ cursor:pointer;
 font-size:14px;
 
 }
+
+.calendar-table td.today .calendar-date{
+
+  width:32px;
+  height:32px;
+
+  margin:auto;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:#15803d;
+  color:white;
+
+  font-weight:700;
+
+  box-shadow:
+  0 4px 12px rgba(21,128,61,.25);
+
+}
   
   
 </style>
@@ -4858,6 +4881,14 @@ col === 0;
 const holidayName =
 holidays[tanggal];
 
+const today = new Date();
+
+const isToday =
+
+date === today.getDate() &&
+month === today.getMonth() &&
+year === today.getFullYear();
+
 let html = `
 <div class="calendar-date">
 ${date}
@@ -4890,6 +4921,12 @@ if(isSunday){
 
 td.style.color =
 "#dc2626";
+}
+
+if(isToday){
+
+  td.classList.add("today");
+
 }
 
 td.innerHTML = html;
