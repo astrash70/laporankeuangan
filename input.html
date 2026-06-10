@@ -1496,6 +1496,51 @@ font-size:14px;
 
 }
 
+.calendar-table td.disabled{
+
+  opacity:.35;
+
+  cursor:not-allowed;
+
+  color:#94a3b8;
+
+  pointer-events:none;
+
+}
+
+.calendar-table td.clickable{
+
+  cursor:pointer;
+
+}
+
+.calendar-table td.clickable:hover:not(.disabled){
+
+  background:#f1f5f9;
+
+}
+
+.calendar-table td.selected .calendar-date{
+
+  width:32px;
+  height:32px;
+
+  margin:auto;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:#0a6b2d;
+
+  color:white;
+
+  font-weight:700;
+
+}
+
 .calendar-table td.today .calendar-date{
 
   width:32px;
@@ -2494,6 +2539,536 @@ function formatRupiah(number){
 
 }
 
+/* =========================
+LAPORAN HARIAN (PER TANGGAL)
+========================= */
+
+let selectedDate =
+formatDateKey(new Date());
+
+let feeFormula = '=0';
+
+let feeTotal = 0;
+
+let calendarViewYear =
+new Date().getFullYear();
+
+let calendarViewMonth =
+new Date().getMonth();
+
+const BULAN_NAMA = [
+'Januari','Februari','Maret','April','Mei','Juni',
+'Juli','Agustus','September','Oktober','November','Desember'
+];
+
+function formatDateKey(date){
+
+const y = date.getFullYear();
+
+const m = String(
+date.getMonth() + 1
+).padStart(2,'0');
+
+const d = String(
+date.getDate()
+).padStart(2,'0');
+
+return y + '-' + m + '-' + d;
+
+}
+
+function parseDateKey(key){
+
+const parts = key.split('-').map(Number);
+
+return new Date(
+parts[0],
+parts[1] - 1,
+parts[2]
+);
+
+}
+
+function getTodayKey(){
+
+return formatDateKey(new Date());
+
+}
+
+function getPreviousDateKey(dateKey){
+
+const dt = parseDateKey(dateKey);
+
+dt.setDate(dt.getDate() - 1);
+
+return formatDateKey(dt);
+
+}
+
+function getLaporanStorageKey(date){
+
+return 'laporan_' + date;
+
+}
+
+function normalizeLaporan(raw){
+
+const parseArr = (val,fallback) => {
+
+if(Array.isArray(val)) return val;
+
+try{
+
+return JSON.parse(val || fallback);
+
+}catch(e){
+
+return JSON.parse(fallback);
+
+}
+
+};
+
+return {
+
+cashPagi: raw.cashPagi || '',
+
+saldoData: parseArr(raw.saldoData,'[]'),
+
+transaksiData: parseArr(raw.transaksiData,'[]'),
+
+mutasiData: parseArr(raw.mutasiData,'[]'),
+
+feeFormula: raw.feeFormula || '',
+
+feeTotal: Number(raw.feeTotal) || 0
+
+};
+
+}
+
+function syncLegacyLocalStorage(){
+
+localStorage.setItem(
+'feeTotal',
+String(feeTotal)
+);
+
+}
+
+function buildLaporanObject(){
+
+return {
+
+cashPagi: cashPagiInput?.value || '',
+
+saldoData: saldoData,
+
+transaksiData: transaksiData,
+
+mutasiData: mutasiData,
+
+feeFormula: feeFormula || '',
+
+feeTotal: feeTotal || 0
+
+};
+
+}
+
+function simpanLaporanTanggal(date,data){
+
+const laporan = {
+
+cashPagi: data.cashPagi || '',
+
+saldoData: data.saldoData || [],
+
+transaksiData: data.transaksiData || [],
+
+mutasiData: data.mutasiData || [],
+
+feeFormula: data.feeFormula || '',
+
+feeTotal: Number(data.feeTotal) || 0
+
+};
+
+localStorage.setItem(
+getLaporanStorageKey(date),
+JSON.stringify(laporan)
+);
+
+}
+
+function simpanLaporanAktif(){
+
+simpanLaporanTanggal(
+selectedDate,
+buildLaporanObject()
+);
+
+syncLegacyLocalStorage();
+
+}
+
+function applyLaporanKeMemori(laporan){
+
+cashPagiInput.value =
+laporan.cashPagi || '';
+
+saldoData = laporan.saldoData || [];
+
+transaksiData = laporan.transaksiData || [];
+
+mutasiData = laporan.mutasiData || [];
+
+feeFormula =
+laporan.feeFormula || '=0';
+
+feeTotal =
+Number(laporan.feeTotal) || 0;
+
+syncLegacyLocalStorage();
+
+}
+
+function hitungRekapAkhirTanggal(dateKey){
+
+const raw =
+localStorage.getItem(
+getLaporanStorageKey(dateKey)
+);
+
+if(!raw) return null;
+
+const laporan =
+normalizeLaporan(
+JSON.parse(raw)
+);
+
+const backup = {
+
+cashPagi: cashPagiInput.value,
+
+saldoData: saldoData.slice(),
+
+transaksiData: transaksiData.slice(),
+
+mutasiData: mutasiData.slice(),
+
+feeFormula: feeFormula,
+
+feeTotal: feeTotal
+
+};
+
+cashPagiInput.value = laporan.cashPagi;
+
+saldoData = laporan.saldoData;
+
+transaksiData = laporan.transaksiData;
+
+mutasiData = laporan.mutasiData;
+
+feeFormula = laporan.feeFormula || '=0';
+
+feeTotal = Number(laporan.feeTotal) || 0;
+
+syncLegacyLocalStorage();
+
+const rekap = hitungRekap();
+
+cashPagiInput.value = backup.cashPagi;
+
+saldoData = backup.saldoData;
+
+transaksiData = backup.transaksiData;
+
+mutasiData = backup.mutasiData;
+
+feeFormula = backup.feeFormula;
+
+feeTotal = backup.feeTotal;
+
+syncLegacyLocalStorage();
+
+return rekap;
+
+}
+
+function buatLaporanBaru(dateKey){
+
+let cashPagi = '';
+
+let saldoBaru = [];
+
+const prevKey =
+getPreviousDateKey(dateKey);
+
+const rekapPrev =
+hitungRekapAkhirTanggal(prevKey);
+
+if(rekapPrev){
+
+cashPagi =
+formatRupiah(rekapPrev.cashAkhir);
+
+saldoBaru =
+Object.keys(rekapPrev.saldoAkhir)
+.sort((a,b) => a.localeCompare(b))
+.map(nama => ({
+
+nama: nama,
+
+nominal: formatRupiah(
+rekapPrev.saldoAkhir[nama]
+),
+
+ket: ''
+
+}));
+
+}
+
+return {
+
+cashPagi: cashPagi,
+
+saldoData: saldoBaru,
+
+transaksiData: [],
+
+mutasiData: [],
+
+feeFormula: '',
+
+feeTotal: 0
+
+};
+
+}
+
+function migrasiDataLama(){
+
+const today = getTodayKey();
+
+const key =
+getLaporanStorageKey(today);
+
+if(localStorage.getItem(key)) return;
+
+const adaLama =
+localStorage.getItem('cashPagi') ||
+localStorage.getItem('saldoData') ||
+localStorage.getItem('transaksiData') ||
+localStorage.getItem('mutasiData') ||
+localStorage.getItem('feeFormula') ||
+localStorage.getItem('feeTotal');
+
+if(!adaLama) return;
+
+const laporan = {
+
+cashPagi:
+localStorage.getItem('cashPagi') || '',
+
+saldoData: JSON.parse(
+localStorage.getItem('saldoData') || '[]'
+),
+
+transaksiData: JSON.parse(
+localStorage.getItem('transaksiData') || '[]'
+),
+
+mutasiData: JSON.parse(
+localStorage.getItem('mutasiData') || '[]'
+),
+
+feeFormula:
+localStorage.getItem('feeFormula') || '',
+
+feeTotal: Number(
+localStorage.getItem('feeTotal')
+) || 0
+
+};
+
+simpanLaporanTanggal(today,laporan);
+
+[
+'cashPagi',
+'saldoData',
+'transaksiData',
+'mutasiData',
+'feeFormula',
+'feeTotal'
+].forEach(k =>
+localStorage.removeItem(k)
+);
+
+}
+
+function formatLabelTanggal(dateKey){
+
+const dt = parseDateKey(dateKey);
+
+return dt.toLocaleDateString(
+'id-ID',
+{
+day:'numeric',
+month:'long',
+year:'numeric'
+}
+);
+
+}
+
+function updateSelectedDateLabel(){
+
+const el =
+document.getElementById(
+'tanggalText'
+);
+
+if(el){
+el.textContent =
+formatLabelTanggal(selectedDate);
+}
+
+}
+
+function renderHalamanLaporan(){
+
+editIndex = null;
+
+editTransaksiIndex = null;
+
+renderFee();
+
+renderSaldoTable();
+
+renderMutasi();
+
+renderTransaksi();
+
+updateTotalModal();
+
+updateAllRekap();
+
+}
+
+function loadLaporanTanggal(
+date,
+opts = {}
+){
+
+if(
+!opts.skipSavePrevious &&
+selectedDate &&
+selectedDate !== date
+){
+
+simpanLaporanTanggal(
+selectedDate,
+buildLaporanObject()
+);
+
+}
+
+const raw =
+localStorage.getItem(
+getLaporanStorageKey(date)
+);
+
+let laporan;
+
+if(raw){
+
+laporan =
+normalizeLaporan(
+JSON.parse(raw)
+);
+
+}else{
+
+laporan = buatLaporanBaru(date);
+
+simpanLaporanTanggal(date,laporan);
+
+}
+
+selectedDate = date;
+
+sessionStorage.setItem(
+'inputSelectedDate',
+date
+);
+
+applyLaporanKeMemori(laporan);
+
+updateSelectedDateLabel();
+
+}
+
+function pilihTanggal(date){
+
+if(date > getTodayKey()) return;
+
+loadLaporanTanggal(date);
+
+renderHalamanLaporan();
+
+const popup =
+document.getElementById('calendarPopup');
+
+if(popup){
+popup.style.display = 'none';
+}
+
+renderCalendar();
+
+}
+
+function initLaporanHarian(){
+
+migrasiDataLama();
+
+const saved =
+sessionStorage.getItem(
+'inputSelectedDate'
+);
+
+const today = getTodayKey();
+
+if(
+saved &&
+saved <= today
+){
+
+selectedDate = saved;
+
+}else{
+
+selectedDate = today;
+
+}
+
+loadLaporanTanggal(
+selectedDate,
+{ skipSavePrevious: true }
+);
+
+updateSelectedDateLabel();
+
+initKalender();
+
+renderHalamanLaporan();
+
+renderNasabahList();
+
+}
+
 function isSaldoIn(arah){
 
 return String(arah || "")
@@ -2930,25 +3505,6 @@ const totalModal =
 document.getElementById('totalModal');
 
 /* =========================
-LOAD DATA LOCAL STORAGE
-========================= */
-
-const savedCash =
-localStorage.getItem('cashPagi');
-
-if(savedCash){
-
-  cashPagiInput.value =
-  savedCash;
-
-}else{
-
-  cashPagiInput.value =
-  'Rp 23.890.509';
-
-}
-
-/* =========================
 UPDATE TOTAL MODAL
 ========================= */
 
@@ -2986,10 +3542,7 @@ function(){
   this.value =
   formatRupiah(angka);
 
-  localStorage.setItem(
-    'cashPagi',
-    this.value
-  );
+  simpanLaporanAktif();
 
   updateTotalModal();
 
@@ -3013,13 +3566,6 @@ function(e){
 
   }
 });
-
-/* =========================
-AUTO LOAD TOTAL
-========================= */
-
-updateTotalModal();
-
 
   /* =========================
 POPUP
@@ -3114,16 +3660,6 @@ DATA SALDO
 let saldoData = [];
 
 let editIndex = null;
-
-const savedSaldo =
-localStorage.getItem('saldoData');
-
-if(savedSaldo){
-
-  saldoData =
-  JSON.parse(savedSaldo);
-
-}
 
 const akunBankData =
 JSON.parse(
@@ -3296,10 +3832,7 @@ if(editIndex !== null){
 
 }
 
-  localStorage.setItem(
-    'saldoData',
-    JSON.stringify(saldoData)
-  );
+  simpanLaporanAktif();
 
   renderSaldoTable();
 
@@ -3380,10 +3913,7 @@ function hapusSaldo(index){
 
   saldoData.splice(index,1);
 
-  localStorage.setItem(
-    'saldoData',
-    JSON.stringify(saldoData)
-  );
+  simpanLaporanAktif();
 
   renderSaldoTable();
 
@@ -3429,12 +3959,7 @@ function editSaldo(index){
 TRANSAKSI NASABAH
 ========================= */
 
-let transaksiData =
-JSON.parse(
-  localStorage.getItem(
-    'transaksiData'
-  )
-) || [];
+let transaksiData = [];
 
 let nasabahData =
 JSON.parse(
@@ -3537,10 +4062,7 @@ function closeTransaksiPopup(){
     1
   );
 
-  localStorage.setItem(
-    'transaksiData',
-    JSON.stringify(transaksiData)
-  );
+  simpanLaporanAktif();
 
   renderTransaksi();
 
@@ -3556,10 +4078,7 @@ function closeTransaksiPopup(){
     }
   );
 
-  localStorage.setItem(
-    'transaksiData',
-    JSON.stringify(transaksiData)
-  );
+  simpanLaporanAktif();
 
   renderTransaksi();
 
@@ -3951,12 +4470,7 @@ keterangan
 
 });
 
-localStorage.setItem(
-"mutasiData",
-JSON.stringify(
-mutasiData
-)
-);
+simpanLaporanAktif();
 
 renderMutasi();
 
@@ -4031,10 +4545,7 @@ if(
 
 }
 
-localStorage.setItem(
-  'transaksiData',
-  JSON.stringify(transaksiData)
-);
+simpanLaporanAktif();
 
   renderTransaksi();
 
@@ -4393,12 +4904,7 @@ document
 MUTASI
 ========================= */
 
-let mutasiData =
-JSON.parse(
-localStorage.getItem(
-"mutasiData"
-)
-) || [];
+let mutasiData = [];
 
 function openMutasiPopup(){
 
@@ -4560,12 +5066,7 @@ index,
 1
 );
 
-localStorage.setItem(
-"mutasiData",
-JSON.stringify(
-mutasiData
-)
-);
+simpanLaporanAktif();
 
 renderMutasi();
 
@@ -4578,20 +5079,12 @@ FEE MANUAL
 const feeInput =
 document.getElementById('feeInput');
 
-let feeFormula =
-localStorage.getItem(
-'feeFormula'
-) || '=0';
-
-let feeTotal =
-Number(
-localStorage.getItem(
-'feeTotal'
-)
-) || 0;
+function renderFee(){
 
 feeInput.value =
 formatRupiah(feeTotal);
+
+}
 
 function simpanFee(){
 
@@ -4619,18 +5112,9 @@ function simpanFee(){
     feeFormula = rumus;
     feeTotal = hasil;
 
-    localStorage.setItem(
-      'feeFormula',
-      feeFormula
-    );
+    simpanLaporanAktif();
 
-    localStorage.setItem(
-      'feeTotal',
-      feeTotal
-    );
-
-    feeInput.value =
-    formatRupiah(feeTotal);
+    renderFee();
 
     updateAllRekap();
 
@@ -4669,18 +5153,6 @@ function(){
 
 });
 
-updateAllRekap();
-
-renderSaldoTable();
-
-renderMutasi();
-
-renderTransaksi();
-
-updateAllRekap();
-
-renderNasabahList();
-
 /* =========================
 DRAFT / RESET / FINALISASI
 ========================= */
@@ -4688,64 +5160,57 @@ DRAFT / RESET / FINALISASI
 function kumpulkanDataLaporan(){
 
   return {
-    cashPagi: localStorage.getItem('cashPagi') || '',
-    saldoData: localStorage.getItem('saldoData') || '[]',
-    transaksiData: localStorage.getItem('transaksiData') || '[]',
-    mutasiData: localStorage.getItem('mutasiData') || '[]',
-    feeFormula: localStorage.getItem('feeFormula') || '',
-    feeTotal: localStorage.getItem('feeTotal') || '0',
+    ...buildLaporanObject(),
     savedAt: new Date().toISOString()
   };
 
 }
 
-
 window.resetLaporan = function(){
 
   if(
     !confirm(
-      'Reset semua input laporan hari ini? Transaksi, mutasi, kas pagi, dan saldo akan dikosongkan.'
+      'Reset semua input laporan tanggal ' +
+      formatLabelTanggal(selectedDate) +
+      '? Transaksi, mutasi, kas pagi, dan saldo akan dikosongkan.'
     )
   ){
     return;
   }
 
-  [
-    'cashPagi',
-    'saldoData',
-    'transaksiData',
-    'mutasiData',
-    'feeFormula',
-    'feeTotal',
-    'laporanDraft'
-  ].forEach(key => localStorage.removeItem(key));
+  localStorage.removeItem(
+    getLaporanStorageKey(selectedDate)
+  );
 
-  location.reload();
+  loadLaporanTanggal(
+    selectedDate,
+    { skipSavePrevious: true }
+  );
+
+  renderHalamanLaporan();
 
 };
 
 window.finalisasiLaporan = function(){
 
+  simpanLaporanAktif();
+
   const data = kumpulkanDataLaporan();
 
   data.status = 'final';
 
-  const tanggal =
-  new Date().toISOString().slice(0, 10);
+  const tanggal = selectedDate;
+
+  simpanLaporanTanggal(tanggal,data);
 
   localStorage.setItem(
     'laporanFinal_' + tanggal,
     JSON.stringify(data)
   );
 
-  localStorage.setItem(
-    'laporanDraft',
-    JSON.stringify(data)
-  );
-
   alert(
     'Laporan tanggal ' +
-    tanggal +
+    formatLabelTanggal(tanggal) +
     ' berhasil difinalisasi.'
   );
 
@@ -4755,10 +5220,7 @@ window.addEventListener("beforeunload", () => {
 
 try{
 
-localStorage.setItem(
-"laporanDraft",
-JSON.stringify(kumpulkanDataLaporan())
-);
+simpanLaporanAktif();
 
 }catch(e){
 
@@ -4774,10 +5236,7 @@ if(document.visibilityState !== "hidden") return;
 
 try{
 
-localStorage.setItem(
-"laporanDraft",
-JSON.stringify(kumpulkanDataLaporan())
-);
+simpanLaporanAktif();
 
 }catch(e){
 
@@ -4791,49 +5250,31 @@ console.error(e);
 KALENDER NASIONAL INDONESIA
 ========================= */
 
+const calendarBody =
+document.getElementById("calendarBody");
 
-const calendarBody = document.getElementById("calendarBody");
-const holidayInfo = document.getElementById("holidayInfo");
-
-let currentDate = new Date();
-
-/* LIBUR NASIONAL API */
+const holidayInfo =
+document.getElementById("holidayInfo");
 
 async function getHolidays(year){
 return {};
 }
 
-
 async function renderCalendar(){
 
-const year =
-currentDate.getFullYear();
+const year = calendarViewYear;
 
-const month =
-currentDate.getMonth();
+const month = calendarViewMonth;
 
 const holidays =
 await getHolidays(year);
 
-const bulanIndonesia = [
-"Januari",
-"Februari",
-"Maret",
-"April",
-"Mei",
-"Juni",
-"Juli",
-"Agustus",
-"September",
-"Oktober",
-"November",
-"Desember"
-];
+const todayKey = getTodayKey();
 
 document.getElementById(
 "calendarTitle"
 ).textContent =
-`${bulanIndonesia[month]} ${year}`;
+`${BULAN_NAMA[month]} ${year}`;
 
 calendarBody.innerHTML = "";
 
@@ -4881,13 +5322,8 @@ col === 0;
 const holidayName =
 holidays[tanggal];
 
-const today = new Date();
-
 const isToday =
-
-date === today.getDate() &&
-month === today.getMonth() &&
-year === today.getFullYear();
+tanggal === todayKey;
 
 let html = `
 <div class="calendar-date">
@@ -4925,7 +5361,34 @@ td.style.color =
 
 if(isToday){
 
-  td.classList.add("today");
+td.classList.add("today");
+
+}
+
+if(tanggal === selectedDate){
+
+td.classList.add("selected");
+
+}
+
+if(tanggal > todayKey){
+
+td.classList.add("disabled");
+
+}else{
+
+td.classList.add("clickable");
+
+td.addEventListener(
+'click',
+function(e){
+
+e.stopPropagation();
+
+pilihTanggal(tanggal);
+
+}
+);
 
 }
 
@@ -4974,31 +5437,7 @@ color:#dc2626;
 
 }
 
-document
-.getElementById("prevMonth")
-.addEventListener("click",()=>{
-
-currentDate.setMonth(
-currentDate.getMonth()-1
-);
-
-renderCalendar();
-
-});
-
-document
-.getElementById("nextMonth")
-.addEventListener("click",()=>{
-
-currentDate.setMonth(
-currentDate.getMonth()+1
-);
-
-renderCalendar();
-
-});
-
-renderCalendar();
+function initKalender(){
 
 const btnTanggal =
 document.querySelector('.date-box');
@@ -5006,26 +5445,95 @@ document.querySelector('.date-box');
 const popup =
 document.getElementById('calendarPopup');
 
-if(btnTanggal && popup){
+const prevBtn =
+document.getElementById("prevMonth");
 
-btnTanggal.addEventListener(
+const nextBtn =
+document.getElementById("nextMonth");
+
+btnTanggal?.addEventListener(
 'click',
 function(e){
 
 e.stopPropagation();
 
-popup.style.display =
-popup.style.display === 'block'
-? 'none'
-: 'block';
+if(!popup) return;
 
-});
+if(
+popup.style.display === 'block'
+){
+
+popup.style.display = 'none';
+
+}else{
+
+const dt =
+parseDateKey(selectedDate);
+
+calendarViewYear =
+dt.getFullYear();
+
+calendarViewMonth =
+dt.getMonth();
+
+renderCalendar();
+
+popup.style.display = 'block';
+
+}
+
+}
+);
+
+prevBtn?.addEventListener(
+'click',
+function(e){
+
+e.stopPropagation();
+
+calendarViewMonth--;
+
+if(calendarViewMonth < 0){
+
+calendarViewMonth = 11;
+
+calendarViewYear--;
+
+}
+
+renderCalendar();
+
+}
+);
+
+nextBtn?.addEventListener(
+'click',
+function(e){
+
+e.stopPropagation();
+
+calendarViewMonth++;
+
+if(calendarViewMonth > 11){
+
+calendarViewMonth = 0;
+
+calendarViewYear++;
+
+}
+
+renderCalendar();
+
+}
+);
 
 document.addEventListener(
 'click',
 function(e){
 
 if(
+popup &&
+btnTanggal &&
 !popup.contains(e.target) &&
 !btnTanggal.contains(e.target)
 ){
@@ -5034,9 +5542,12 @@ popup.style.display = 'none';
 
 }
 
-});
+}
+);
 
 }
+
+initLaporanHarian();
   
 </script>
 
