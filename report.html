@@ -1581,15 +1581,7 @@ dari total transaksi.
 
 <!-- UPDATE -->
 
-<div class="update-bar">
-
-<i class="fa-solid fa-circle-info"></i>
-
-<div>
-Data diperbarui per 22 Mei 2026, 10:30 WIB
-</div>
-
-</div>
+<div id="lastUpdate"></div>
 
 </div>
 
@@ -1607,6 +1599,17 @@ const options = {
 
 document.getElementById('todayDate').textContent =
 today.toLocaleDateString('id-ID', options);
+
+
+const now = new Date();
+
+document.getElementById('lastUpdate').textContent =
+'Data diperbarui ' +
+now.toLocaleDateString('id-ID',{
+day:'numeric',
+month:'long',
+year:'numeric'
+});
 
 </script>
   
