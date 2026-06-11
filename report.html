@@ -1572,16 +1572,37 @@ const options = {
 document.getElementById('todayDate').textContent =
 today.toLocaleDateString('id-ID', options);
 
+const lastUpdate =
+localStorage.getItem("lastReportUpdate");
 
-const now = new Date();
+if(lastUpdate){
 
-document.getElementById('lastUpdate').textContent =
-'Data diperbarui ' +
-now.toLocaleDateString('id-ID',{
-day:'numeric',
-month:'long',
-year:'numeric'
-});
+    const d = new Date(lastUpdate);
+
+    document.getElementById('lastUpdate').textContent =
+
+    'Data diperbarui ' +
+
+    d.toLocaleDateString('id-ID',{
+        day:'numeric',
+        month:'long',
+        year:'numeric'
+    })
+
+    +
+
+    ' • ' +
+
+    d.toLocaleTimeString('id-ID',{
+        hour:'2-digit',
+        minute:'2-digit'
+    })
+
+    +
+
+    ' WIB';
+
+}
 
 </script>
   
