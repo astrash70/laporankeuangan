@@ -5199,6 +5199,9 @@ window.finalisasiLaporan = function(){
 
   data.status = 'final';
 
+  /* TAMBAHAN */
+  data.updatedAt = new Date().toISOString();
+
   const tanggal = selectedDate;
 
   simpanLaporanTanggal(tanggal,data);
@@ -5208,6 +5211,12 @@ window.finalisasiLaporan = function(){
     JSON.stringify(data)
   );
 
+  /* TAMBAHAN */
+  localStorage.setItem(
+    'lastReportUpdate',
+    data.updatedAt
+  );
+
   alert(
     'Laporan tanggal ' +
     formatLabelTanggal(tanggal) +
@@ -5215,20 +5224,6 @@ window.finalisasiLaporan = function(){
   );
 
 };
-
-window.addEventListener("beforeunload", () => {
-
-try{
-
-simpanLaporanAktif();
-
-}catch(e){
-
-console.error(e);
-
-}
-
-});
 
 document.addEventListener("visibilitychange", () => {
 
