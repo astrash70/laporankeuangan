@@ -1281,8 +1281,8 @@ MOBILE CALENDAR
           Lihat Detail →
         </button>
         
-        <div class="hero-total">
-          Rp 750.000.000
+        <div class="hero-total" id="dashboardTotalAset">
+          Rp 0
         </div>
 
         <div class="hero-desc">
@@ -1816,7 +1816,27 @@ document.getElementById(
 ).innerText =
 fullDate;
 
+/* FINANCIAL OVERVIEW - AMBIL TOTAL ASET DARI LOCALSTORAGE */
+function loadDashboardTotalAset() {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+  const dateKey = y + '-' + m + '-' + d;
 
+  const totalAset = localStorage.getItem('dashboard_total_aset_' + dateKey);
+  const el = document.getElementById('dashboardTotalAset');
+  if (el) {
+    if (totalAset !== null) {
+      const num = Number(totalAset) || 0;
+      el.textContent = 'Rp ' + num.toLocaleString('id-ID');
+    } else {
+      el.textContent = 'Rp 0';
+    }
+  }
+}
+
+loadDashboardTotalAset();
 </script>
 
 </body>
