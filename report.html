@@ -359,6 +359,17 @@ TOPBAR
   gap:12px;
 }
 
+.export-top-btn{
+  height:50px;
+  padding:0 28px;
+  border:none;
+  border-radius:16px;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+}
+  
+
 /* ======================
 FILTER
 ====================== */
@@ -985,33 +996,14 @@ Pantau performa dan kondisi keuangan berdasarkan data transaksi
 
 <div class="date-box">
 <i class="fa-regular fa-calendar"></i>
-1 Jan 2026 - 22 Mei 2026
-<i class="fa-solid fa-chevron-down"></i>
+<span id="todayDate"></span>
 </div>
 
-<div class="user-box">
-
-<div class="profile-avatar"
-style="width:42px;height:42px;">
-T
-</div>
-
-<div>
-
-<div style="font-weight:700;">
-Tokosayyida
-</div>
-
-<div style="font-size:13px;color:#667085;">
-Admin
-</div>
-
-</div>
-
-<i class="fa-solid fa-chevron-down"
-style="margin-left:10px;"></i>
-
-</div>
+<button class="filter-btn btn-green export-top-btn">
+    <i class="fa-solid fa-download"></i>
+    &nbsp;
+    Export
+</button>
 
 </div>
 
@@ -1479,5 +1471,20 @@ Data diperbarui per 22 Mei 2026, 10:30 WIB
 
 </div>
 
+<script>
+
+const today = new Date();
+
+const options = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+};
+
+document.getElementById('todayDate').textContent =
+today.toLocaleDateString('id-ID', options);
+
+</script>
+  
 </body>
 </html>
