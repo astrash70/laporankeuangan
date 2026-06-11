@@ -1014,9 +1014,7 @@ Pantau performa dan kondisi keuangan berdasarkan data transaksi
 Tahun
 </label>
 
-<select>
-<option>2026</option>
-</select>
+<select id="filterTahun"></select>
 
 </div>
 
@@ -1026,9 +1024,7 @@ Tahun
 Bulan
 </label>
 
-<select>
-<option>Semua Bulan</option>
-</select>
+<select id="filterBulan"></select>
 
 </div>
 
@@ -1038,9 +1034,7 @@ Bulan
 Jenis Transaksi
 </label>
 
-<select>
-<option>Semua</option>
-</select>
+<select id="filterJenis"></select>
 
 </div>
 
@@ -1058,11 +1052,9 @@ Jenis Transaksi
 TOTAL TRANSAKSI
 </h5>
 
-<h2>
-16.842
-</h2>
+<h2 id="kpiTotalTransaksi">0</h2>
 
-<div class="stat-change green">
+<div id="changeTotalTransaksi" class="stat-change green">
 ▲ 9,52%
 </div>
 
@@ -1087,11 +1079,9 @@ style="background:#e8f6ec;color:#16a34a;">
 TOTAL REVENUE (NET)
 </h5>
 
-<h2>
-Rp 309.000
-</h2>
+<h2 id="kpiRevenue">Rp 0</h2>
 
-<div class="stat-change green">
+<div id="changeRevenue" class="stat-change green">
 ▲ 7,84%
 </div>
 
@@ -1116,11 +1106,9 @@ style="background:#edf8f0;color:#16a34a;">
 DANA KELUAR
 </h5>
 
-<h2>
-Rp 2.450.000
-</h2>
+<h2 id="kpiDanaKeluar">Rp 0</h2>
 
-<div class="stat-change red">
+<div id="changeDanaKeluar" class="stat-change red">
 ▲ 12,40%
 </div>
 
@@ -1207,59 +1195,7 @@ Top 5 Jenis Transaksi
 
 </thead>
 
-<tbody>
-
-<tr>
-<td>Tarik Tunai</td>
-<td>
-<div class="progress">
-<span style="width:82%"></span>
-</div>
-</td>
-<td>50,19%</td>
-</tr>
-
-<tr>
-<td>Transfer BRI</td>
-<td>
-<div class="progress">
-<span style="width:45%"></span>
-</div>
-</td>
-<td>18,54%</td>
-</tr>
-
-<tr>
-<td>PLN</td>
-<td>
-<div class="progress">
-<span style="width:32%"></span>
-</div>
-</td>
-<td>10,93%</td>
-</tr>
-
-<tr>
-<td>Dana</td>
-<td>
-<div class="progress">
-<span style="width:24%"></span>
-</div>
-</td>
-<td>7,31%</td>
-</tr>
-
-<tr>
-<td>Lainnya</td>
-<td>
-<div class="progress">
-<span style="width:10%"></span>
-</div>
-</td>
-<td>1,14%</td>
-</tr>
-
-</tbody>
+<tbody id="top5Body"></tbody>
 
 </table>
 
@@ -1326,37 +1262,37 @@ Top 5 Jenis Transaksi
         top:145px;
         ">
 
-            <div style="
+            <div id="komposisiLabelKiri" style="
             color:#16a34a;
             font-size:12px;
             font-weight:500;
             margin-bottom:4px;
             ">
-                Transfer
+                -
             </div>
 
-            <div style="
+            <div id="komposisiNilaiKiri" style="
             font-size:14px;
             font-weight:700;
             line-height:1;
             color:#111827;
             ">
-                6.812
+                0
             </div>
 
-            <div style="
+            <div id="komposisiPersenKiri" style="
             color:#64748b;
             font-size:10px;
             margin-top:2px;
             ">
-                (40,5%)
+                (0%)
             </div>
 
         </div>
 
         <!-- DONUT -->
 
-        <div style="
+        <div id="donutChart" style="
         width:180px;
         height:180px;
         border-radius:50%;
@@ -1391,30 +1327,30 @@ Top 5 Jenis Transaksi
         text-align:left;
         ">
 
-            <div style="
+            <div id="komposisiLabelKanan" style="
             color:#16a34a;
             font-size:12px;
             font-weight:500;
             margin-bottom:4px;
             ">
-                Tarik Tunai
+                -
             </div>
 
-            <div style="
+            <div id="komposisiNilaiKanan" style="
             font-size:14px;
             font-weight:700;
             line-height:1;
             color:#111827;
             ">
-                10.030
+                0
             </div>
 
-            <div style="
+            <div id="komposisiPersenKanan" style="
             color:#64748b;
             font-size:10px;
             margin-top:2px;
             ">
-                (59,5%)
+                (0%)
             </div>
 
         </div>
@@ -1435,7 +1371,7 @@ Insight Kinerja
 
 </div>
 
-<div style="
+<div id="insightList" style="
 display:flex;
 flex-direction:column;
 gap:14px;
@@ -1547,304 +1483,411 @@ dari total transaksi.
 </div>
 
 <script>
-
+const MONTH_NAMES = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const state = { view: 'bulan' };
+let reportCache = null;
 const today = new Date();
+const options = { day: 'numeric', month: 'long', year: 'numeric' };
 
-const options = {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-};
-
-document.getElementById('todayDate').textContent =
-today.toLocaleDateString('id-ID', options);
-
-const lastUpdate =
-localStorage.getItem("lastReportUpdate");
-
-if(lastUpdate){
-
-    const d = new Date(lastUpdate);
-
-    document.getElementById('lastUpdate').textContent =
-
-    'Data diperbarui ' +
-
-    d.toLocaleDateString('id-ID',{
-        day:'numeric',
-        month:'long',
-        year:'numeric'
-    })
-
-    +
-
-    ' • ' +
-
-    d.toLocaleTimeString('id-ID',{
-        hour:'2-digit',
-        minute:'2-digit'
-    })
-
-    +
-
-    ' WIB';
-
+function formatRupiah(value) {
+  const num = Number(String(value || 0).replace(/[^\d.-]/g, '')) || 0;
+  return 'Rp ' + num.toLocaleString('id-ID');
 }
 
+function parseRupiah(value) {
+  const num = Number(String(value || '0').replace(/[^\d.-]/g, '')) || 0;
+  return num;
+}
+
+function safePercent(current, previous) {
+  if (previous === 0) return current === 0 ? 0 : 100;
+  return ((current - previous) / previous) * 100;
+}
+
+function formatChange(value) {
+  const rounded = Math.abs(value).toFixed(2);
+  return `${value >= 0 ? '▲' : '▼'} ${rounded}%`;
+}
+
+function getFinalizedReports() {
+  return Object.keys(localStorage)
+    .filter((key) => key.startsWith('laporanFinal_'))
+    .map((key) => {
+      try {
+        const raw = localStorage.getItem(key);
+        const report = raw ? JSON.parse(raw) : null;
+
+        if (!report || typeof report !== 'object' || Array.isArray(report)) {
+          return null;
+        }
+
+        return {
+          ...report,
+          transaksiData: Array.isArray(report.transaksiData) ? report.transaksiData : [],
+          mutasiData: Array.isArray(report.mutasiData) ? report.mutasiData : [],
+          __key: key
+        };
+      } catch (e) {
+        return null;
+      }
+    })
+    .filter(Boolean)
+    .sort((a, b) => new Date(b.updatedAt || b.savedAt || 0) - new Date(a.updatedAt || a.savedAt || 0));
+}
+
+function getReportDate(report) {
+  const key = report.__key || '';
+  const compactMatch = key.match(/^laporanFinal_(\d{4})(\d{2})(\d{2})$/);
+  const hyphenMatch = key.match(/^laporanFinal_(\d{4})-(\d{2})-(\d{2})$/);
+
+  if (compactMatch) {
+    return new Date(`${compactMatch[1]}-${compactMatch[2]}-${compactMatch[3]}T00:00:00`);
+  }
+
+  if (hyphenMatch) {
+    return new Date(`${hyphenMatch[1]}-${hyphenMatch[2]}-${hyphenMatch[3]}T00:00:00`);
+  }
+
+  const fallback = new Date(report.updatedAt || report.savedAt || Date.now());
+  return Number.isNaN(fallback.getTime()) ? new Date() : fallback;
+}
+
+function isDanaKeluar(item) {
+  const text = `${item.jenis || ''} ${item.keterangan || ''} ${item.arah || ''}`.toLowerCase();
+  return text.includes('dana keluar');
+}
+
+function summarizeReport(report, transaksiItems) {
+  const transaksi = Array.isArray(transaksiItems) ? transaksiItems : (Array.isArray(report.transaksiData) ? report.transaksiData : []);
+  const mutasi = Array.isArray(report.mutasiData) ? report.mutasiData : [];
+  const totalAdmin = transaksi.reduce((sum, item) => sum + parseRupiah(item.admin || 0), 0);
+  const totalAdminBank = [...transaksi, ...mutasi].reduce((sum, item) => sum + parseRupiah(item.adminBank || 0), 0);
+  const feeTotal = Number(report.feeTotal || 0);
+  const totalTransaksi = transaksi.length;
+  const danaKeluar = mutasi.filter(isDanaKeluar).reduce((sum, item) => sum + parseRupiah(item.nominal || 0), 0);
+  return {
+    totalTransaksi,
+    totalAdmin,
+    totalAdminBank,
+    feeTotal,
+    revenueNet: totalAdmin + feeTotal - totalAdminBank,
+    danaKeluar
+  };
+}
+
+function getFilteredReportData() {
+  const stamp = localStorage.getItem('lastReportUpdate') || 'none';
+  const yearSelect = document.getElementById('filterTahun');
+  const monthSelect = document.getElementById('filterBulan');
+  const jenisSelect = document.getElementById('filterJenis');
+
+  const selectedYear = yearSelect ? yearSelect.value : 'Semua Tahun';
+  const selectedMonth = monthSelect ? monthSelect.value : 'Semua Bulan';
+  const selectedJenis = jenisSelect ? jenisSelect.value : 'Semua';
+  const cacheKey = `${stamp}|${selectedYear}|${selectedMonth}|${selectedJenis}`;
+
+  if (reportCache && reportCache.cacheKey === cacheKey) return reportCache;
+
+  const reports = getFinalizedReports().map((report) => ({
+
+    ...report,
+    __summary: summarizeReport(report),
+    __date: getReportDate(report)
+  }));
+
+  const filteredReports = reports.filter((report) => {
+    const dt = report.__date;
+    const year = String(dt.getFullYear());
+    const month = String(dt.getMonth() + 1).padStart(2, '0');
+    if (selectedYear !== 'Semua Tahun' && year !== selectedYear) return false;
+    if (selectedMonth !== 'Semua Bulan' && month !== selectedMonth) return false;
+    return true;
+  });
+
+  const transaksi = filteredReports.flatMap((report) => (report.transaksiData || []).map((item) => ({ ...item, __report: report })));
+  const mutasi = filteredReports.flatMap((report) => (report.mutasiData || []).map((item) => ({ ...item, __report: report })));
+
+  const filteredByJenis = selectedJenis === 'Semua' ? transaksi : transaksi.filter((item) => String(item.jenis || '').toLowerCase() === selectedJenis.toLowerCase());
+
+  const totalTransaksi = filteredByJenis.length;
+  const revenueNet = filteredReports.reduce((sum, report) => {
+    const reportItems = selectedJenis === 'Semua'
+      ? (report.transaksiData || [])
+      : (report.transaksiData || []).filter((item) => String(item.jenis || '').toLowerCase() === selectedJenis.toLowerCase());
+    return sum + summarizeReport(report, reportItems).revenueNet;
+  }, 0);
+  const danaKeluar = mutasi.filter(isDanaKeluar).reduce((sum, item) => sum + parseRupiah(item.nominal || 0), 0);
+
+  const byJenis = filteredByJenis.reduce((acc, item) => {
+    const key = String(item.jenis || 'Lainnya');
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+
+  const previousReports = reports.filter((report) => {
+    const dt = report.__date;
+    const currentYear = Number(selectedYear) || null;
+    const currentMonth = Number(selectedMonth) || null;
+
+    if (selectedMonth !== 'Semua Bulan') {
+      const monthNum = dt.getMonth() + 1;
+      const yearNum = dt.getFullYear();
+      const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+      const prevYear = currentMonth === 1 ? yearNum - 1 : yearNum;
+      const yearMatch = selectedYear === 'Semua Tahun' || yearNum === currentYear;
+      return yearMatch && monthNum === prevMonth && dt.getFullYear() === prevYear;
+    }
+
+    if (selectedYear !== 'Semua Tahun') {
+      return dt.getFullYear() === currentYear - 1;
+    }
+
+    return false;
+  });
+
+  const previousSummary = previousReports.reduce((acc, report) => {
+    const s = report.__summary || summarizeReport(report);
+    acc.totalTransaksi += s.totalTransaksi || 0;
+    acc.revenueNet += s.revenueNet || 0;
+    acc.danaKeluar += s.danaKeluar || 0;
+    return acc;
+  }, { totalTransaksi: 0, revenueNet: 0, danaKeluar: 0 });
+
+  const top5 = Object.entries(byJenis).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  const totalCount = top5.reduce((sum, [, count]) => sum + count, 0) || 1;
+  const topTwo = top5.slice(0, 2);
+
+  reportCache = {
+    cacheKey,
+    stamp,
+    reports,
+    filteredReports,
+    transaksi: filteredByJenis,
+    mutasi,
+    totalTransaksi,
+    revenueNet,
+    danaKeluar,
+    top5,
+    topTwo,
+    totalCount,
+    selectedYear,
+    selectedMonth,
+    selectedJenis,
+    previousSummary
+  };
+
+  return reportCache;
+}
+
+function renderReportPage() {
+  const data = getFilteredReportData();
+  const totalTransaksiEl = document.getElementById('kpiTotalTransaksi');
+  const revenueEl = document.getElementById('kpiRevenue');
+  const danaKeluarEl = document.getElementById('kpiDanaKeluar');
+  const changeTransaksiEl = document.getElementById('changeTotalTransaksi');
+  const changeRevenueEl = document.getElementById('changeRevenue');
+  const changeDanaKeluarEl = document.getElementById('changeDanaKeluar');
+
+  const prevSummary = data.previousSummary || { totalTransaksi: 0, revenueNet: 0, danaKeluar: 0 };
+
+  totalTransaksiEl.textContent = data.totalTransaksi.toLocaleString('id-ID');
+  revenueEl.textContent = formatRupiah(data.revenueNet);
+  danaKeluarEl.textContent = formatRupiah(data.danaKeluar);
+
+  const pctTransaksi = safePercent(data.totalTransaksi, prevSummary.totalTransaksi);
+  const pctRevenue = safePercent(data.revenueNet, prevSummary.revenueNet);
+  const pctDana = safePercent(data.danaKeluar, prevSummary.danaKeluar);
+
+  changeTransaksiEl.textContent = formatChange(pctTransaksi);
+  changeRevenueEl.textContent = formatChange(pctRevenue);
+  changeDanaKeluarEl.textContent = formatChange(pctDana);
+  changeTransaksiEl.className = `stat-change ${pctTransaksi >= 0 ? 'green' : 'red'}`;
+  changeRevenueEl.className = `stat-change ${pctRevenue >= 0 ? 'green' : 'red'}`;
+  changeDanaKeluarEl.className = `stat-change ${pctDana >= 0 ? 'green' : 'red'}`;
+
+  renderTop5(data.top5, data.totalCount);
+  renderKomposisi(data.topTwo, data.totalCount);
+  renderInsights(data);
+  renderChart(data);
+}
+
+function renderTop5(top5, totalCount) {
+  const body = document.getElementById('top5Body');
+  if (!body) return;
+  body.innerHTML = top5.length ? top5.map(([nama, count]) => {
+    const pct = (count / totalCount) * 100;
+    return `<tr><td>${nama}</td><td><div class="progress"><span style="width:${Math.max(8, pct)}%"></span></div></td><td>${pct.toFixed(2)}%</td></tr>`;
+  }).join('') : '<tr><td colspan="3" style="text-align:center;color:#94a3b8;">Tidak ada data</td></tr>';
+}
+
+function renderKomposisi(topTwo, totalCount) {
+  const left = topTwo[0] || ['-', 0];
+  const right = topTwo[1] || ['-', 0];
+  const leftPct = (left[1] / totalCount) * 100;
+  const rightPct = (right[1] / totalCount) * 100;
+
+  document.getElementById('komposisiLabelKiri').textContent = left[0];
+  document.getElementById('komposisiNilaiKiri').textContent = left[1].toLocaleString('id-ID');
+  document.getElementById('komposisiPersenKiri').textContent = `(${leftPct.toFixed(1)}%)`;
+  document.getElementById('komposisiLabelKanan').textContent = right[0];
+  document.getElementById('komposisiNilaiKanan').textContent = right[1].toLocaleString('id-ID');
+  document.getElementById('komposisiPersenKanan').textContent = `(${rightPct.toFixed(1)}%)`;
+
+  const donut = document.getElementById('donutChart');
+  if (donut) {
+    const first = Math.min(100, leftPct);
+    const second = Math.min(100, rightPct);
+    donut.style.background = `conic-gradient(#16a34a 0% ${first}%, #86efac ${first}% ${first + second}%, #e5e7eb ${first + second}% 100%)`;
+  }
+}
+
+function renderInsights(data) {
+  const insights = document.getElementById('insightList');
+  if (!insights) return;
+  const top = data.top5[0] || ['Tidak ada data', 0];
+  const prev = data.previousSummary || { revenueNet: 0, totalTransaksi: 0, danaKeluar: 0 };
+  const revenuePct = safePercent(data.revenueNet, prev.revenueNet);
+  const transaksiPct = safePercent(data.totalTransaksi, prev.totalTransaksi);
+  const danaPct = safePercent(data.danaKeluar, prev.danaKeluar);
+  insights.innerHTML = `
+    <div style="display:flex;gap:14px;padding:16px;background:#f8fafc;border-radius:14px;"><div class="stat-icon" style="background:#e8f6ec;color:#16a34a;flex-shrink:0;"><i class="fa-solid fa-arrow-trend-up"></i></div><div>Revenue bersih ${revenuePct >= 0 ? 'naik' : 'turun'} ${Math.abs(revenuePct).toFixed(2)}% menjadi <strong style="color:#16a34a;">${formatRupiah(data.revenueNet)}</strong> dibanding periode sebelumnya.</div></div>
+    <div style="display:flex;gap:14px;padding:16px;background:#f8fafc;border-radius:14px;"><div class="stat-icon" style="background:#edf5ff;color:#2563eb;flex-shrink:0;"><i class="fa-solid fa-receipt"></i></div><div>Total transaksi ${transaksiPct >= 0 ? 'meningkat' : 'menurun'} ${Math.abs(transaksiPct).toFixed(2)}% menjadi <strong style="color:#16a34a;">${data.totalTransaksi}</strong> transaksi.</div></div>
+    <div style="display:flex;gap:14px;padding:16px;background:#f8fafc;border-radius:14px;"><div class="stat-icon" style="background:#f5ecff;color:#9333ea;flex-shrink:0;"><i class="fa-solid fa-chart-pie"></i></div><div>${top[0] || 'Tidak ada'} menyumbang <strong style="color:#16a34a;">${((top[1] || 0) / Math.max(1, data.totalTransaksi) * 100).toFixed(1)}%</strong> dari total transaksi yang terlihat, sementara dana keluar ${danaPct >= 0 ? 'naik' : 'turun'} ${Math.abs(danaPct).toFixed(2)}%.</div></div>`;
+}
+
+function populateFilters() {
+  const reports = getFinalizedReports();
+  const years = ['Semua Tahun', ...new Set(reports.map((r) => String(getReportDate(r).getFullYear())))];
+  const months = ['Semua Bulan', ...new Set(reports.map((r) => String(getReportDate(r).getMonth() + 1).padStart(2, '0')))].sort((a, b) => a === 'Semua Bulan' ? -1 : Number(a) - Number(b));
+  const jenisList = ['Semua', ...new Set(reports.flatMap((r) => (r.transaksiData || []).map((item) => String(item.jenis || 'Lainnya'))))];
+
+  const fill = (id, options) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = options.map((opt) => `<option value="${opt}">${opt === 'Semua Tahun' ? 'Semua Tahun' : opt === 'Semua Bulan' ? 'Semua Bulan' : opt === 'Semua' ? 'Semua' : opt}</option>`).join('');
+  };
+
+  fill('filterTahun', years);
+  fill('filterBulan', months);
+  fill('filterJenis', jenisList);
+}
+
+function renderChart(data) {
+  if (!window.ApexCharts) return;
+  const monthly = Array.from({ length: 12 }, (_, i) => ({ month: i + 1, transaksi: 0, revenue: 0 }));
+  data.filteredReports.forEach((report) => {
+    const dt = getReportDate(report);
+    const m = dt.getMonth();
+    const items = data.selectedJenis === 'Semua'
+      ? (report.transaksiData || [])
+      : (report.transaksiData || []).filter((item) => String(item.jenis || '').toLowerCase() === data.selectedJenis.toLowerCase());
+    monthly[m].transaksi += items.length;
+    monthly[m].revenue += summarizeReport(report, items).revenueNet;
+  });
+
+  const yearly = {};
+  data.filteredReports.forEach((report) => {
+    const y = getReportDate(report).getFullYear();
+    const items = data.selectedJenis === 'Semua'
+      ? (report.transaksiData || [])
+      : (report.transaksiData || []).filter((item) => String(item.jenis || '').toLowerCase() === data.selectedJenis.toLowerCase());
+    yearly[y] = yearly[y] || { transaksi: 0, revenue: 0 };
+    yearly[y].transaksi += items.length;
+    yearly[y].revenue += summarizeReport(report, items).revenueNet;
+  });
+
+  const seriesData = {
+    bulanan: {
+      categories: MONTH_NAMES,
+      transaksi: monthly.map((item) => item.transaksi),
+      revenue: monthly.map((item) => item.revenue / 1000000)
+    },
+    tahunan: {
+      categories: Object.keys(yearly).sort(),
+      transaksi: Object.keys(yearly).sort().map((y) => yearly[y].transaksi),
+      revenue: Object.keys(yearly).sort().map((y) => yearly[y].revenue / 1000000)
+    }
+  };
+
+  if (!window.__reportChart) {
+    window.__reportChart = new ApexCharts(document.querySelector('#trendChart'), {
+      chart: { height: 420, type: 'line', toolbar: { show: false } },
+      series: [
+        { name: 'Jumlah Transaksi', data: seriesData.bulanan.transaksi },
+        { name: 'Revenue Bersih', data: seriesData.bulanan.revenue }
+      ],
+      colors: ['#16a34a', '#1e3a8a'],
+      stroke: { curve: 'smooth', width: 3 },
+      markers: { size: 4 },
+      legend: { position: 'top', horizontalAlign: 'left' },
+      grid: { borderColor: '#edf2f7' },
+      xaxis: { categories: seriesData.bulanan.categories },
+      yaxis: [
+        { min: 0, labels: { formatter: (val) => val.toLocaleString('id-ID') } },
+        { opposite: true, min: 0, labels: { formatter: (val) => `${val.toFixed(1)} jt` } }
+      ]
+    });
+    window.__reportChart.render();
+  }
+
+  window.__reportChart.updateOptions({
+    xaxis: { categories: seriesData[state.view === 'tahun' ? 'tahunan' : 'bulanan'].categories },
+    yaxis: [
+      { min: 0, labels: { formatter: (val) => val.toLocaleString('id-ID') } },
+      { opposite: true, min: 0, labels: { formatter: (val) => `${val.toFixed(1)} jt` } }
+    ]
+  });
+
+  window.__reportChart.updateSeries([
+    { name: 'Jumlah Transaksi', data: seriesData[state.view === 'tahun' ? 'tahunan' : 'bulanan'].transaksi },
+    { name: 'Revenue Bersih', data: seriesData[state.view === 'tahun' ? 'tahunan' : 'bulanan'].revenue }
+  ]);
+}
+
+function exportReportPdf() {
+  const element = document.querySelector('.main-content');
+  const month = document.getElementById('filterBulan')?.value || 'Semua';
+  const year = document.getElementById('filterTahun')?.value || 'Semua';
+  if (!window.html2pdf || !element) return;
+
+  window.html2pdf().set({
+    margin: 0.4,
+    filename: `Laporan_${month}_${year}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  }).from(element).save();
+}
+
+function initializeReportPage() {
+  document.getElementById('todayDate').textContent = today.toLocaleDateString('id-ID', options);
+
+  const lastUpdate = localStorage.getItem('lastReportUpdate');
+  if (lastUpdate) {
+    const d = new Date(lastUpdate);
+    document.getElementById('lastUpdate').textContent = 'Data diperbarui ' + d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) + ' • ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+  }
+
+  populateFilters();
+  document.getElementById('filterTahun').addEventListener('change', renderReportPage);
+  document.getElementById('filterBulan').addEventListener('change', renderReportPage);
+  document.getElementById('filterJenis').addEventListener('change', renderReportPage);
+  document.getElementById('btnBulanan').addEventListener('click', () => { state.view = 'bulan'; document.getElementById('btnBulanan').classList.add('active'); document.getElementById('btnTahunan').classList.remove('active'); renderChart(getFilteredReportData()); });
+  document.getElementById('btnTahunan').addEventListener('click', () => { state.view = 'tahun'; document.getElementById('btnTahunan').classList.add('active'); document.getElementById('btnBulanan').classList.remove('active'); renderChart(getFilteredReportData()); });
+  document.querySelector('.export-top-btn').addEventListener('click', exportReportPdf);
+
+  renderReportPage();
+}
+
+document.addEventListener('DOMContentLoaded', initializeReportPage);
 </script>
 
 <!-- APEXCHART -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 
-var chartOptions = {
-
-series: [
-
-{
-name: 'Jumlah Transaksi',
-data: [2500,2300,3500,1600,2400,1300,2400,2600,2000,2500,3600,2400]
-},
-
-{
-name: 'Total Revenue',
-data: [40,35,58,22,38,18,33,40,29,40,60,38]
-}
-
-],
-
-chart: {
-height: 420,
-type: 'line',
-toolbar: {
-show: false
-}
-},
-
-colors: [
-'#16a34a',
-'#1e3a8a'
-],
-
-stroke: {
-curve: 'smooth',
-width: 3
-},
-
-markers: {
-size: 4
-},
-
-legend: {
-position: 'top',
-horizontalAlign: 'left'
-},
-
-grid: {
-borderColor: '#edf2f7'
-},
-
-xaxis: {
-categories: [
-'Jan','Feb','Mar','Apr',
-'Mei','Jun','Jul','Agu',
-'Sep','Okt','Nov','Des'
-]
-},
-
-yaxis: [
-
-{
-min:0,
-max:4000,
-
-labels:{
-formatter:function(val){
-return (val/1000)+'K';
-}
-}
-},
-
-{
-opposite:true,
-
-min:0,
-max:80,
-
-labels:{
-formatter:function(val){
-return val+'jt';
-}
-}
-}
-
-]
-
-};
-
-const chart = new ApexCharts(
-document.querySelector("#trendChart"),
-chartOptions
-);
-
-chart.render();
-
-const bulanan = {
-
-categories:[
-'Jan','Feb','Mar','Apr',
-'Mei','Jun','Jul','Agu',
-'Sep','Okt','Nov','Des'
-],
-
-transaksi:[
-2500,2300,3500,1600,
-2400,1300,2400,2600,
-2000,2500,3600,2400
-],
-
-revenue:[
-40,35,58,22,
-38,18,33,40,
-29,40,60,38
-]
-
-};
-
-const tahunan = {
-
-categories:[
-'2022',
-'2023',
-'2024',
-'2025',
-'2026'
-],
-
-transaksi:[
-18500,
-21200,
-24800,
-29100,
-33600
-],
-
-revenue:[
-320,
-410,
-520,
-690,
-820
-]
-
-};
-
-document
-.getElementById("btnBulanan")
-.addEventListener("click",()=>{
-
-document
-.getElementById("btnBulanan")
-.classList.add("active");
-
-document
-.getElementById("btnTahunan")
-.classList.remove("active");
-
-chart.updateOptions({
-
-xaxis:{
-categories:
-bulanan.categories
-},
-
-yaxis:[
-
-{
-min:0,
-max:4000
-},
-
-{
-opposite:true,
-min:0,
-max:80
-}
-
-]
-
-});
-
-chart.updateSeries([
-
-{
-name:"Jumlah Transaksi",
-data:bulanan.transaksi
-},
-
-{
-name:"Total Revenue",
-data:bulanan.revenue
-}
-
-]);
-
-});
-
-document
-.getElementById("btnTahunan")
-.addEventListener("click",()=>{
-
-document
-.getElementById("btnTahunan")
-.classList.add("active");
-
-document
-.getElementById("btnBulanan")
-.classList.remove("active");
-
-chart.updateOptions({
-
-xaxis:{
-categories:
-tahunan.categories
-},
-
-yaxis:[
-
-{
-min:0,
-max:40000
-},
-
-{
-opposite:true,
-min:0,
-max:1000
-}
-
-]
-
-});
-
-chart.updateSeries([
-
-{
-name:"Jumlah Transaksi",
-data:tahunan.transaksi
-},
-
-{
-name:"Total Revenue",
-data:tahunan.revenue
-}
-
-]);
-
-});
-
-  
 </script>
 
 </body>
